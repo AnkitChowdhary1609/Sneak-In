@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sneak In  - Comfortable Shoes</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Favicon for browser tab -->
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <!-- Visually hidden logo+brand for SEO and accessibility -->
+    <style>
+      .visually-hidden-logo-title { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+    </style>
+</head>
+<body>
+    <div class="visually-hidden-logo-title">
+      <img src="logo.jpg" alt="Sneak In Logo" style="border-radius:50%;border:2.5px solid #007bff;object-fit:cover;">
+      <span>Sneak In - Comfortable Shoes</span>
+    </div>
+    <div id="loading-spinner" class="loading">Loading...</div>
+
+    <header>
+        <nav>
+            <div class="logo">
+                <span class="logo-circle"><img src="logo.jpg" alt="Sneak In Logo"></span>
+                <span class="brand-name">🅂🄽🄴🄰🄺 🄸🄽</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="hero" class="hero">
+        <video class="hero-video" src="vid2.mp4" type="video/mp4" autoplay muted loop playsinline>
+            Your browser does not support the video tag.
+        </video>
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <h1 class="fade-in">Step into Comfort</h1>
+                <p class="fade-in">Discover shoes that blend style, sustainability, and innovation.</p>
+                <a href="#products" class="cta-button ripple">Shop Now</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="products" class="products">
+        <h2 class="fade-in">Featured Products</h2>
+        <div class="carousel">
+            <button class="carousel-btn prev">&lt;</button>
+            <div class="carousel-container">
+                <div class="product-card" data-modal="modal1">
+                    <img src="pic1.jpg" alt="Shoe 1">
+                    <h3>Classic Sneaker</h3>
+                    <p>₹12000</p>
+                </div>
+                <div class="product-card" data-modal="modal2">
+                    <img src="pic2.jpg" alt="Shoe 2">
+                    <h3>Urban Boot</h3>
+                    <p>₹15000</p>
+                </div>
+                <div class="product-card" data-modal="modal3">
+                    <img src="pic3.jpg" alt="Shoe 3">
+                    <h3>Casual Loafer</h3>
+                    <p>₹10000</p>
+                </div>
+                <div class="product-card" data-modal="modal4">
+                    <img src="pic4.jpg" alt="Shoe 4">
+                    <h3>Running Shoe</h3>
+                    <p>₹7000</p>
+                </div>
+                <div class="product-card" data-modal="modal5">
+                    <img src="pic5.jpg" alt="Shoe 5">
+                    <h3>Slip-On Comfort</h3>
+                    <p>₹5000</p>
+                </div>
+                <div class="product-card" data-modal="modal6">
+                    <img src="pic6.jpg" alt="Shoe 6">
+                    <h3>High-Top Street</h3>
+                    <p>₹14000</p>
+                </div>
+                <div class="product-card" data-modal="modal7">
+                    <img src="pic7.jpg" alt="Shoe 7">
+                    <h3>Blazer</h3>
+                    <p>₹8000</p>
+                </div>
+                <div class="product-card" data-modal="modal8">
+                    <img src="pic8.jpg" alt="Shoe 8">
+                    <h3>Pestro</h3>
+                    <p>₹9000</p>
+                </div>
+            </div>
+            <button class="carousel-btn next">&gt;</button>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <h2 class="fade-in">Why Choose Sneak In?</h2>
+        <div class="feature-grid">
+            <div class="feature-item fade-in">
+                <img src="picsus.png" alt="Sustainable materials (suggestion: recycled fabric, green leaves, or earth icon)">
+                <h3>Sustainable Materials</h3>
+                <p>Made from recycled and eco-friendly materials, reducing environmental impact while ensuring durability and comfort.</p>
+            </div>
+            <div class="feature-item fade-in">
+                <img src="piccom.png" alt="Ultimate comfort (suggestion: soft cushion, foot on pillow, or relaxed feet)">
+                <h3>Ultimate Comfort</h3>
+                <p>Engineered insoles and breathable lining provide superior cushioning for all-day wear, no matter your activity.</p>
+            </div>
+            <div class="feature-item fade-in">
+                <img src="picsty.png" alt="Timeless style (suggestion: trendy shoes, fashion runway, or stylish outfit)">
+                <h3>Timeless Style</h3>
+                <p>Modern, versatile designs that seamlessly fit any wardrobe—perfect for work, travel, or leisure.</p>
+            </div>
+            <div class="feature-item fade-in">
+                <img src="picwat.png" alt="Waterproof technology (suggestion: water droplets on shoe, rain, or shield)">
+                <h3>Waterproof Technology</h3>
+                <p>Advanced waterproofing keeps your feet dry in any weather, so you can step out with confidence—rain or shine.</p>
+            </div>
+            <div class="feature-item fade-in">
+                <img src="picdis.png" alt="Lightweight design (suggestion: feather, floating shoe, or cloud)">
+                <h3>Lightweight Design</h3>
+                <p>Ultra-light construction reduces fatigue, making every step feel effortless and energetic throughout your day.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="testimonials">
+        <h2 class="fade-in">What Our Customers Say</h2>
+        <div class="testimonial-slider">
+            <div class="testimonial active">
+                <p>"Sneak In shoes are a game-changer for comfort!"</p>
+                <cite>- Ankit</cite>
+            </div>
+            <div class="testimonial">
+                <p>"Sustainable and stylish – love them!"</p>
+                <cite>- Arpit</cite>
+            </div>
+            <div class="testimonial">
+                <p>"Best purchase I've made this year."</p>
+                <cite>- Vibhor</cite>
+            </div>
+        </div>
+        <div class="slider-dots">
+            <span class="dot active" data-slide="0"></span>
+            <span class="dot" data-slide="1"></span>
+            <span class="dot" data-slide="2"></span>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <h2 class="fade-in">Stay Updated</h2>
+        <form id="newsletter-form">
+            <input type="email" id="email" placeholder="Enter your email" required>
+            <button type="submit" class="cta-button">Subscribe</button>
+        </form>
+        <p id="form-message"></p>
+        <div class="contact-options">
+            <a href="https://www.linkedin.com/in/ankit-chowdhary-1609ac/" target="_blank" class="contact-icon linkedin" title="LinkedIn"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn"/></a>
+            <a href="https://www.instagram.com/_ankit__chowdhary_/" target="_blank" class="contact-icon instagram" title="Instagram"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram"/></a>
+            <a href="https://www.facebook.com/ankit.chowdhary.526" target="_blank" class="contact-icon facebook" title="Facebook"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook"/></a>
+        </div>
+        <div class="contact-details">
+            <span class="contact-text phone">Phone - +91 7876857173</span>
+            <span class="contact-text email">Email - ankitchowdhary1609@gmail.com</span>
+        </div>
+    </section>
+
+    <!-- Modal for Product Details -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modal-body">
+                <!-- Content populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Sneak In. All rights reserved.</p>
+        <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+        </ul>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
