@@ -68,7 +68,7 @@ nav {
     border-radius: 50%;
     background: #fff;
     box-shadow: 0 2px 12px rgba(0,123,255,0.10);
-    border: 2.5px solid #007bff;
+    border: 2.5px solid #1b1a1a;
     overflow: hidden;
 }
 
@@ -131,7 +131,7 @@ nav {
 
 .nav-links a:hover, .nav-links a:focus {
     color: #fff;
-    background: linear-gradient(90deg, #007bff 0%, #00c6ff 100%);
+    background: linear-gradient(90deg, #1b1a1a 0%, #555557 100%);
     box-shadow: 0 4px 16px rgba(0,123,255,0.13);
     transform: scale(1.08) translateY(-2px);
     text-shadow: 0 2px 8px rgba(0,0,0,0.08);
@@ -154,7 +154,7 @@ nav {
     bottom: 8px;
     width: 0;
     height: 3px;
-    background: linear-gradient(90deg, #007bff 0%, #00c6ff 100%);
+    background: linear-gradient(90deg, #1b1a1a 0%, #555557 100%);
     border-radius: 2px;
     transition: width 0.3s cubic-bezier(.4,2,.6,1), left 0.3s cubic-bezier(.4,2,.6,1);
     z-index: 2;
@@ -167,18 +167,19 @@ nav {
 /* Hero Section with Parallax */
 .hero {
     position: relative;
-    height: 100vh;
+    width: 100%;
+    height: 800px;
     overflow: hidden;
 }
 
-.hero-video {
-    position: absolute;
-    top: 0;
-    left: 0;
+.hero-video,
+.category-video {
     width: 100%;
-    height: 100%;
+    height: 800px;
     object-fit: cover;
-    z-index: -1;
+    border-radius: 0;
+    box-shadow: none;
+    display: block;
 }
 
 .hero-overlay {
@@ -275,101 +276,6 @@ nav {
     letter-spacing: 1px;
     color: #222;
 }
-
-.carousel {
-    position: relative;
-    overflow: hidden;
-    padding-bottom: 1.5rem;
-}
-
-.carousel-container {
-    display: flex;
-    flex-direction: row;
-    gap: 2rem;
-    justify-content: flex-start;
-    flex-wrap: nowrap;
-    width: 100%;
-    transition: transform 0.5s cubic-bezier(.4,2,.6,1);
-    will-change: transform;
-    overflow: visible;
-}
-
-.product-card {
-    min-width: 300px;
-    max-width: 300px;
-    margin: 0 1rem;
-    background: #fff;
-    border: 1px solid #ddd;
-    padding: 1rem;
-    border-radius: 10px;
-    transition: transform 0.3s, box-shadow 0.3s;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    height: 420px; /* ensures all cards are same height */
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(135deg, #f8f8f8 60%, #e0e7ef 100%);
-}
-
-.product-card:hover {
-    transform: scale(1.07) rotate(1deg);
-    box-shadow: 0 10px 28px rgba(0,0,0,0.13);
-    z-index: 2;
-    border-color: #007bff;
-}
-
-.product-card img {
-    width: 100%;
-    max-width: 250px;
-    height: 250px;
-    object-fit: contain;
-    margin-bottom: 1rem;
-    border-radius: 12px;
-    background: #fff;
-    box-shadow: 0 1px 6px rgba(0,0,0,0.07);
-}
-
-.product-card h3, .product-card p {
-    margin: 0.5rem 0 0 0;
-    text-align: center;
-}
-
-.product-card h3 {
-    min-height: 2.5em; /* reserve space for 2 lines, keeps names aligned */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.25rem;
-    color: #222;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-}
-
-.product-card p {
-    font-size: 1.1rem;
-    color: #007bff;
-    font-weight: 600;
-    margin-top: 0.25rem;
-}
-
-.carousel-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0,0,0,0.5);
-    color: #fff;
-    border: none;
-    padding: 1rem;
-    cursor: pointer;
-    z-index: 10;
-}
-
-.prev { left: 0; }
-.next { right: 0; }
 
 /* Features Section */
 .features {
@@ -642,13 +548,6 @@ footer a {
     .hero-content h1 {
         font-size: 2.5rem;
     }
-    .carousel-container {
-        flex-direction: column;
-    }
-    .product-card {
-        min-width: 100%;
-        margin: 1rem 0;
-    }
     .nav-links {
         display: none;
     }
@@ -658,4 +557,252 @@ footer a {
     .brand-name {
         font-size: 2rem;
     }
+}
+
+/* Category video size like hero section */
+.category-video-container {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+.category-title-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-shadow: 0 2px 8px #000;
+    pointer-events: none;
+}
+
+/* Category products layout like products section carousel */
+.category-products {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    margin: 2rem 0;
+}
+.product-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    padding: 1rem;
+    width: 200px;
+    text-align: center;
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.product-card img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.product-card h3 {
+    margin: 0.5rem 0 0.2rem 0;
+    font-size: 1.1rem;
+}
+.product-card p {
+    margin: 0;
+    font-size: 1rem;
+    color: #007bff;
+}
+.product-card:hover {
+    transform: translateY(-8px) scale(1.04);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+}
+
+/* Enhanced, modern arrow buttons for carousels */
+.enhanced-arrow {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    margin: 0 1rem;
+    transition: background 0.2s, transform 0.2s;
+}
+.enhanced-arrow:hover {
+    background: #333334;
+    transform: scale(1.1);
+}
+
+.visually-hidden-logo-title { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+
+.product-nav-bar {
+    font-size: 1.5rem;
+    list-style: none;
+    display: flex;
+    gap: 1.2rem;
+    padding: 0.5rem 0.5rem;
+    border-radius: 2.5rem;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+.product-nav-btn {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: color 0.3s;
+    padding: 0.5rem 1.2rem;
+    border-radius: 2rem;
+    position: relative;
+    transition: all 0.25s cubic-bezier(.4,2,.6,1);
+    background: none;
+    z-index: 1;
+    overflow: hidden;
+    display: inline-block;
+    font-size: 1.5rem;
+}
+.product-nav-btn:hover, .product-nav-btn:focus {
+    color: #fff;
+    background: linear-gradient(90deg, #1b1a1a 0%, #555557 100%);
+    box-shadow: 0 4px 16px rgba(0,123,255,0.13);
+    transform: scale(1.08) translateY(-2px);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.product-nav-btn.active {
+    color: #fff;
+    background: linear-gradient(90deg, #797878 0%, #161616 100%);
+    box-shadow: 0 4px 16px rgba(221,36,118,0.13);
+    font-weight: 900;
+}
+.product-nav-btn::after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 50%;
+    bottom: 8px;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #1b1a1a 0%, #555557 100%);
+    border-radius: 2px;
+    transition: width 0.3s cubic-bezier(.4,2,.6,1), left 0.3s cubic-bezier(.4,2,.6,1);
+    z-index: 2;
+}
+.product-nav-btn:hover::after, .product-nav-btn:focus::after, .product-nav-btn.active::after {
+    width: 70%;
+    left: 15%;
+}
+
+.category-products {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+.carousel-arrow-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.carousel-btn.enhanced-arrow {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1b1a1a 60%, #333334 100%);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(99,102,241,0.15);
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+    margin: 0 0.5rem;
+    position: relative;
+    overflow: hidden;
+}
+.carousel-btn.enhanced-arrow:hover {
+    background: linear-gradient(135deg, #1b1a1a 60%, #333334 100%);
+    box-shadow: 0 4px 16px rgba(99,102,241,0.25);
+    transform: scale(1.08);
+}
+.carousel-btn.enhanced-arrow:active {
+    animation: arrowClick 0.25s cubic-bezier(.4,2,.6,1);
+}
+@keyframes arrowClick {
+    0% { box-shadow: 0 0 0 0 #555557; }
+    50% { box-shadow: 0 0 16px 8px #55555744; }
+    100% { box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+}
+.arrow-icon {
+    font-size: 2rem;
+    color: #fff;
+    user-select: none;
+}
+.carousel-container {
+    display: flex;
+    gap: 2rem;
+    overflow: hidden;
+    width: 80vw;
+    max-width: 1100px;
+    min-width: 320px;
+}
+.carousel-container .product-card {
+    animation: productSlideIn 0.4s cubic-bezier(.4,2,.6,1);
+}
+@keyframes productSlideIn {
+    0% { opacity: 0; transform: translateX(40px) scale(0.96); }
+    60% { opacity: 1; transform: translateX(-8px) scale(1.04); }
+    100% { opacity: 1; transform: translateX(0) scale(1); }
+}
+.product-card {
+    background: #fff;
+    border-radius: 1.5rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    padding: 1.5rem;
+    min-width: 260px;
+    max-width: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: box-shadow 0.3s, transform 0.2s;
+}
+.product-card img {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+}
+.product-card h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+.product-card p {
+    font-size: 1.1rem;
+    color: #1b1a1a;
+    font-weight: 600;
+}
+.product-card:hover {
+    box-shadow: 0 6px 24px rgba(99,102,241,0.18);
+    transform: translateY(-4px) scale(1.03);
+}
+.product-nav-btn {
+    scroll-behavior: smooth;
+}
+.product-nav-btn:active {
+    animation: navBtnClick 0.2s cubic-bezier(.4,2,.6,1);
+}
+@keyframes navBtnClick {
+    0% { box-shadow: 0 0 0 0 #007bff; }
+    50% { box-shadow: 0 0 16px 8px #007bff44; }
+    100% { box-shadow: 0 4px 16px rgba(0,123,255,0.13); }
 }
