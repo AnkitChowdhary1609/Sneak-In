@@ -1,19 +1,3 @@
-// Hide loading spinner after page load
-window.addEventListener('load', () => {
-    document.getElementById('loading-spinner').style.display = 'none';
-});
-
-// Smooth scrolling for nav links
-document.querySelectorAll('.nav-links a').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        target.scrollIntoView({
-            behavior: 'smooth'
-        });
-    });
-});
-
 // Smooth scroll for product nav buttons
 const navBtns = document.querySelectorAll('.product-nav-btn');
 navBtns.forEach(btn => {
@@ -107,9 +91,9 @@ function addSwipeToCarousel(category) {
     const diff = moveX - startX;
     if (Math.abs(diff) > 50) {
       if (diff < 0) {
-        window.showNext(category);
+        showNext(category);
       } else {
-        window.showPrev(category);
+        showPrev(category);
       }
       isDown = false;
     }
@@ -129,9 +113,9 @@ function addSwipeToCarousel(category) {
     const diff = moveX - mouseStartX;
     if (Math.abs(diff) > 50) {
       if (diff < 0) {
-        window.showNext(category);
+        showNext(category);
       } else {
-        window.showPrev(category);
+        showPrev(category);
       }
       isDown = false;
     }
@@ -179,26 +163,166 @@ function showProductModal(product) {
   if (!modal || !modalBody) return;
   modalBody.innerHTML = `
     <span class="close" style="position:absolute;top:10px;right:20px;font-size:2rem;cursor:pointer;">&times;</span>
-    <div style="display:flex;align-items:center;gap:2rem;">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:1.2rem;width:100%;max-width:420px;margin:auto;">
       <img src="${product.img}" alt="${product.name}" style="width:180px;height:180px;border-radius:1rem;object-fit:cover;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
-      <div style="display:flex;flex-direction:column;gap:1.2rem;align-items:flex-start;">
-        <h2 style="font-size:2rem;margin:0;">${product.name}</h2>
-        <p style="font-size:1.2rem;color:#007bff;font-weight:600;margin:0;">₹${product.price}</p>
-        <button id="add-to-cart-btn" class="cta-button" style="font-size:1.1rem;">Add to Cart</button>
+      <div style="width:100%;display:flex;flex-direction:column;align-items:center;gap:0.5rem;">
+        <h2 style="font-size:1.25rem;margin:0;text-align:center;word-break:break-word;max-width:95%;min-height:2.6em;line-height:1.3;display:flex;align-items:center;justify-content:center;">${product.name}</h2>
+        <div style="width:100%;display:flex;flex-direction:column;align-items:center;gap:0.3em;">
+          <span class="mrp" style="font-size:1.1rem;text-align:center;width:100%;">MRP: <s>₹${product.mrp}</s></span>
+          <span class="discount-badge" style="font-size:1.05rem;text-align:center;width:100%;">${product.discount}% OFF</span>
+          <span class="new-price" style="font-size:1.15rem;text-align:center;width:100%;font-weight:600;">₹${product.price}</span>
+        </div>
+        <button id="add-to-cart-btn" class="cta-button" style="font-size:1.1rem;width:100%;max-width:220px;margin-top:0.7em;">Add to Cart</button>
       </div>
     </div>
   `;
   modal.style.display = 'block';
   document.getElementById('add-to-cart-btn').onclick = function() {
+    addToCart(product);
     modal.style.display = 'none';
     window.location.hash = '#products';
   };
-  // Attach close handler to the dynamically created close button
   modalBody.querySelector('.close').onclick = function() {
     modal.style.display = 'none';
     window.location.hash = '#products';
   };
 }
+
+// Cart system
+let cart = [];
+function addToCart(product) {
+  const idx = cart.findIndex(item => item.name === product.name);
+  if (idx > -1) {
+    cart[idx].qty += 1;
+  } else {
+    cart.push({ ...product, qty: 1 });
+  }
+  updateCartCount();
+}
+
+// Fix cart quantity controls and total calculation
+function showCartModal() {
+  let cartModal = document.getElementById('cart-modal');
+  if (!cartModal) {
+    cartModal = document.createElement('div');
+    cartModal.id = 'cart-modal';
+    cartModal.className = 'modal';
+    document.body.appendChild(cartModal);
+  }
+  let total = 0;
+  let itemsHtml = cart.map(item => {
+    total += Number(item.price) * item.qty;
+    return `<div class="cart-item" style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;">
+      <img src="${item.img}" alt="${item.name}" style="width:60px;height:60px;border-radius:0.5rem;object-fit:cover;">
+      <div style="flex:1;">
+        <h4 style="margin:0 0 0.2em 0;">${item.name}</h4>
+        <div class="product-pricing">
+          <span class="mrp">MRP: <s>₹${item.mrp}</s></span>
+          <span class="discount-badge">${item.discount}% OFF</span>
+          <span class="new-price">₹${item.price}</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.5em;">
+        <button class="cart-qty-btn" data-name="${item.name}" data-action="-">-</button>
+        <span>${item.qty}</span>
+        <button class="cart-qty-btn" data-name="${item.name}" data-action="+">+</button>
+      </div>
+    </div>`;
+  }).join('');
+  cartModal.innerHTML = `
+    <div class="modal-content" style="min-width:400px;max-width:600px;">
+      <span class="close" style="position:absolute;top:10px;right:20px;font-size:2rem;cursor:pointer;">&times;</span>
+      <h2>My Cart</h2>
+      <div id="cart-items">${itemsHtml || '<div>Your cart is empty.</div>'}</div>
+      <div id="cart-billing" style="margin-top:1.5em;">
+        <h3>Billing Details</h3>
+        <div class="cart-billing-total" style="font-size:1.2em;font-weight:700;">Total: ₹${total}</div>
+        <button id="cart-proceed-btn" class="cta-button" style="margin-top:1em;">Proceed</button>
+      </div>
+    </div>
+  `;
+  cartModal.style.display = 'block';
+  cartModal.querySelector('.close').onclick = function() {
+    cartModal.style.display = 'none';
+  };
+  cartModal.querySelector('#cart-proceed-btn').onclick = function() {
+    alert('Proceeding to checkout!');
+    cartModal.style.display = 'none';
+  };
+  // Attach event listeners for + and - buttons
+  cartModal.querySelectorAll('.cart-qty-btn').forEach(btn => {
+    btn.onclick = function() {
+      const name = btn.getAttribute('data-name');
+      const action = btn.getAttribute('data-action');
+      if (action === '+') {
+        window.updateCartQty(name, 1);
+      } else {
+        window.updateCartQty(name, -1);
+      }
+    };
+  });
+}
+
+window.updateCartQty = function(name, delta) {
+  const idx = cart.findIndex(item => item.name === name);
+  if (idx > -1) {
+    cart[idx].qty += delta;
+    if (cart[idx].qty < 1) {
+      cart.splice(idx, 1);
+    }
+    updateCartCount();
+    showCartModal();
+  }
+};
+
+// Add cart view button at top right and update count
+function updateCartCount() {
+  let cartCount = document.getElementById('cart-count');
+  if (!cartCount) {
+    const nav = document.querySelector('nav');
+    if (nav) {
+      const cartBtn = document.createElement('div');
+      cartBtn.className = 'cart-view-btn';
+      cartBtn.id = 'cart-view-btn';
+      cartBtn.style.position = 'absolute';
+      cartBtn.style.top = '18px';
+      cartBtn.style.right = '32px';
+      cartBtn.style.cursor = 'pointer';
+      cartBtn.style.display = 'flex';
+      cartBtn.style.alignItems = 'center';
+      cartBtn.style.gap = '0.7em';
+      cartBtn.innerHTML = `
+        <img src="cart.jpg" alt="Cart" class="cart-icon" style="width:48px;height:48px;vertical-align:middle;">
+        <span style="font-size:1.2rem;font-weight:700;color:#222;">My Cart</span>
+        <span class="cart-count" id="cart-count" style="background:##000000;color:#fff;border-radius:50%;padding:4px 12px;font-size:1.1rem;position:relative;top:-10px;left:-10px;">0</span>
+      `;
+      nav.appendChild(cartBtn);
+      cartCount = cartBtn.querySelector('#cart-count');
+      cartBtn.onclick = showCartModal;
+    }
+  }
+  if (cartCount) {
+    cartCount.textContent = cart.reduce((sum, item) => sum + item.qty, 0);
+  }
+}
+
+// Initialize cart button on page load
+window.addEventListener('DOMContentLoaded', updateCartCount);
+
+function attachProductCardClicks() {
+  const allCards = document.querySelectorAll('.product-card');
+  allCards.forEach(card => {
+    card.onclick = function() {
+      const img = card.querySelector('img')?.getAttribute('src') || '';
+      const name = card.querySelector('h3')?.textContent || '';
+      const mrp = card.querySelector('.mrp')?.textContent.replace(/[^\d]/g, '') || card.querySelector('p')?.textContent.replace(/[^\d]/g, '') || '';
+      const discount = card.querySelector('.discount-badge')?.textContent.replace(/[^\d]/g, '') || '0';
+      const price = card.querySelector('.new-price')?.textContent.replace(/[^\d]/g, '') || card.querySelector('p')?.textContent.replace(/[^\d]/g, '') || '';
+      showProductModal({ img, name, mrp, discount, price });
+    };
+  });
+}
+attachProductCardClicks();
 
 // Close modal (background click)
 window.addEventListener('click', function(event) {
@@ -207,32 +331,4 @@ window.addEventListener('click', function(event) {
     modal.style.display = 'none';
     window.location.hash = '#products';
   }
-});
-
-function attachProductCardClicks() {
-  const allCards = document.querySelectorAll('.product-card');
-  allCards.forEach(card => {
-    card.onclick = function() {
-      const img = card.querySelector('img')?.getAttribute('src') || '';
-      const name = card.querySelector('h3')?.textContent || '';
-      const price = card.querySelector('p')?.textContent.replace(/[^\d]/g, '') || '';
-      showProductModal({ img, name, price });
-    };
-  });
-}
-attachProductCardClicks();
-
-// Newsletter Form Handling
-document.getElementById('newsletter-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const email = document.getElementById('email').value;
-    const message = document.getElementById('form-message');
-    if (email) {
-        message.textContent = 'Thank you for subscribing!';
-        message.style.color = 'green';
-        document.getElementById('email').value = '';
-    } else {
-        message.textContent = 'Please enter a valid email.';
-        message.style.color = 'red';
-    }
 });
