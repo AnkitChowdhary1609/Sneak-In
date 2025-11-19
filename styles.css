@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 
 /* Reset and base styles */
 * {
@@ -94,7 +93,7 @@ nav {
 }
 
 .brand-name:hover {
-    color: #007bff;
+    color: #050505;
     text-shadow: 0 4px 16px rgba(0,123,255,0.13);
 }
 
@@ -296,34 +295,42 @@ nav {
 }
 
 .feature-item {
-    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem 1.5rem;
     background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-    font-size: 1.1rem;
-    font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    border-radius: 1.5rem;
+    box-shadow: 0 2px 12px rgba(0,123,255,0.07);
     transition: box-shadow 0.2s, transform 0.2s;
-    width: 340px;
-    max-width: 100%;
+    min-width: 220px;
+    min-height: 340px;
+    position: relative;
 }
 
 .feature-item h3 {
-    font-size: 1.3rem;
-    margin-bottom: 0.5rem;
-    color: #222;
+    margin-bottom: 0.7rem;
+    font-size: 1.35rem;
     font-weight: 700;
-    letter-spacing: 0.5px;
+    color: #222;
 }
 
 .feature-item p {
-    font-size: 1rem;
-    color: #333;
+    font-size: 1.05rem;
+    color: #444;
+    margin-bottom: 0;
 }
 
 .feature-item img {
-    width: 110px;
-    height: 110px;
-    margin-bottom: 1.2rem;
+    display: block;
+    margin: 0 auto 1.2rem auto;
+    max-width: 140px;
+    max-height: 140px;
+    object-fit: contain;
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(0,123,255,0.09);
 }
 
 .feature-item:hover {
@@ -805,4 +812,399 @@ footer a {
     0% { box-shadow: 0 0 0 0 #007bff; }
     50% { box-shadow: 0 0 16px 8px #007bff44; }
     100% { box-shadow: 0 4px 16px rgba(0,123,255,0.13); }
+}
+
+/* Cart Modal Quantity Button Size */
+.cart-qty-btn {
+    font-size: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border: none;
+    background: #f5f5f5;
+    color: #222;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: background 0.2s;
+}
+.cart-qty-btn:hover {
+    background: #e0e0e0;
+}
+
+/* Cart Modal Quantity Button Size & Product Info Alignment */
+.cart-modal .quantity-btn {
+    font-size: 2.2rem;
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 50%;
+    margin: 0 0.7rem;
+    background: linear-gradient(135deg, #1e1e1d 0%, #6e6c6d 100%);
+    color: #fff;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: background 0.2s, transform 0.2s;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cart-modal .quantity-btn:hover {
+    background: linear-gradient(135deg, #1e1e1d 0%, #6e6c6d 100%);
+    transform: scale(1.08);
+}
+/* Cart Modal Product Info Symmetry */
+.cart-modal .cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 0;
+    border-bottom: 1px solid #eee;
+}
+.cart-modal .cart-item-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 220px;
+}
+.cart-modal .cart-item-details .product-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0.2rem;
+}
+.cart-modal .cart-item-details .mrp,
+.cart-modal .cart-item-details .discount-badge,
+.cart-modal .cart-item-details .new-price {
+    display: inline-block;
+    margin-right: 0.7rem;
+    font-size: 0.98rem;
+    vertical-align: middle;
+}
+.cart-modal .cart-item-details .discount-badge {
+    background: linear-gradient(90deg, #1e1e1d 0%, #6e6c6d 100%);
+    color: #fff;
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 0.2rem 0.7rem;
+    font-size: 0.95rem;
+    box-shadow: 0 1px 6px rgba(221,36,118,0.12);
+    margin-right: 0.7rem;
+}
+/* Product List Discount Badge Gradient */
+.discount-badge {
+    background: linear-gradient(90deg, #1e1e1d 0%, #6e6c6d 100%);
+    color: #fff;
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 0.2rem 0.7rem;
+    font-size: 0.95rem;
+    box-shadow: 0 1px 6px rgba(221,36,118,0.12);
+    margin-left: 0.7rem;
+    letter-spacing: 0.5px;
+    display: inline-block;
+}
+
+/* Cart Modal Product Info Symmetry */
+.cart-product-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
+}
+.cart-product-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 180px;
+}
+.cart-product-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0.2rem;
+}
+.cart-product-mrp {
+    font-size: 0.95rem;
+    color: #888;
+    margin-bottom: 0.1rem;
+}
+.cart-product-discount {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #fff;
+    background: linear-gradient(90deg,#060606,#1e1e1e);
+    border-radius: 12px;
+    padding: 2px 10px;
+    margin-bottom: 0.1rem;
+    display: inline-block;
+}
+.cart-product-price {
+    font-size: 1.1rem;
+    color: #007bff;
+    font-weight: 600;
+}
+
+/* Discount Badge Styling in Product List */
+.discount-badge {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(90deg,#1e1e1d 0%, #6e6c6d);
+    border-radius: 12px;
+    padding: 2px 10px;
+    margin: 0 0.5rem;
+    box-shadow: 0 2px 8px rgba(255,78,0,0.12);
+    letter-spacing: 1px;
+    display: inline-block;
+}
+
+/* Responsive Design Enhancements */
+@media (max-width: 1200px) {
+  .category-products, .carousel-container {
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  .product-card {
+    min-width: 220px;
+    max-width: 260px;
+  }
+}
+@media (max-width: 900px) {
+  .feature-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  .product-nav-bar {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .carousel-container {
+    gap: 1.5rem;
+  }
+  .product-card {
+    min-width: 180px;
+    max-width: 220px;
+    font-size: 0.95rem;
+  }
+  .cart-modal {
+    width: 90vw;
+    max-width: 480px;
+    padding: 1.2rem;
+  }
+}
+@media (max-width: 600px) {
+  header nav {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.7rem 1rem;
+  }
+  .nav-links {
+    flex-direction: column;
+    gap: 0.7rem;
+    margin-top: 0.7rem;
+  }
+  .brand-name {
+    font-size: 1.2rem;
+  }
+  .category-title-overlay {
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+  }
+  .carousel-container {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+  .product-card {
+    min-width: 90vw;
+    max-width: 95vw;
+    font-size: 0.92rem;
+    margin: 0 auto;
+  }
+  .cart-modal {
+    width: 98vw;
+    max-width: 99vw;
+    padding: 0.7rem;
+    font-size: 0.95rem;
+  }
+  .cart-modal .cart-item-details {
+    min-width: 120px;
+    font-size: 0.92rem;
+  }
+  .feature-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  .testimonial-slider {
+    font-size: 0.98rem;
+    padding: 0.7rem;
+  }
+  .contact-details, .contact-options {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+  .category-video {
+    height: 120px;
+    object-fit: cover;
+  }
+}
+@media (max-width: 400px) {
+  .product-card {
+    min-width: 98vw;
+    max-width: 99vw;
+    font-size: 0.88rem;
+  }
+  .cart-modal {
+    font-size: 0.88rem;
+    padding: 0.3rem;
+  }
+  .feature-item h3 {
+    font-size: 1rem;
+  }
+  .category-title-overlay {
+    font-size: 0.95rem;
+    padding: 0.3rem 0.7rem;
+  }
+}
+/* Ensure images and videos scale */
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+/* Make modal scrollable on small screens */
+.cart-modal {
+  overflow-y: auto;
+  max-height: 90vh;
+}
+/* Responsive footer */
+footer {
+  font-size: 0.95rem;
+  padding: 0.7rem 1rem;
+  text-align: center;
+}
+@media (max-width: 600px) {
+  footer ul {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0;
+  }
+}
+/* Responsive buttons */
+.cta-button, .carousel-btn, .quantity-btn {
+  font-size: 1rem;
+  padding: 0.7rem 1.2rem;
+}
+@media (max-width: 600px) {
+  .cta-button, .carousel-btn, .quantity-btn {
+    font-size: 0.95rem;
+    padding: 0.5rem 0.9rem;
+  }
+}
+
+/* Cart Button Design - Match Featured Product & Nav-links Style */
+.cart-view-btn {
+  position: absolute;
+  top: 18px;
+  right: 32px;
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  background: linear-gradient(90deg, #2e2e2d 0%, #6e6c6d 100%);
+  border-radius: 2em;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 0.5em 1.2em;
+  transition: box-shadow 0.2s, background 0.2s;
+  cursor: pointer;
+  border: none;
+  z-index: 10;
+}
+.cart-view-btn:hover {
+  background: linear-gradient(90deg, #1e1e1d 0%, #6e6c6d 100%);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.cart-view-btn .cart-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.10);
+  object-fit: cover;
+}
+.cart-view-btn span {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+.cart-count {
+  background: linear-gradient(90deg, #1e1e1d 0%, #6e6c6d 100%);
+  color: #fff;
+  border-radius: 50%;
+  padding: 4px 12px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-left: 0.5em;
+  box-shadow: 0 1px 6px rgba(221,36,118,0.12);
+  position: relative;
+  top: -10px;
+  left: -10px;
+}
+@media (max-width: 600px) {
+  .cart-view-btn {
+    top: 10px;
+    right: 10px;
+    padding: 0.3em 0.7em;
+    gap: 0.5em;
+  }
+  .cart-view-btn .cart-icon {
+    width: 28px;
+    height: 28px;
+  }
+  .cart-view-btn span {
+    font-size: 0.98rem;
+  }
+  .cart-count {
+    font-size: 0.95rem;
+    padding: 3px 8px;
+    top: -7px;
+    left: -7px;
+  }
+}
+
+/* Product Card Name Symmetry */
+.product-card h3 {
+  min-height: 2.6em;
+  line-height: 1.3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  word-break: break-word;
+}
+/* Product Pricing Block Symmetry */
+.product-pricing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3em;
+  width: 100%;
+}
+.product-pricing .mrp {
+  font-size: 1.1rem;
+  text-align: center;
+  width: 100%;
+}
+.product-pricing .discount-badge {
+  font-size: 1.05rem;
+  text-align: center;
+  width: 100%;
+}
+.product-pricing .new-price {
+  font-size: 1.15rem;
+  text-align: center;
+  width: 100%;
+  font-weight: 600;
 }
