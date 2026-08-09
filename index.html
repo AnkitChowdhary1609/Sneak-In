@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sneak In — Premium Lifestyle Sneakers</title>
+    <meta name="description"
+        content="Trend-led sneakers, blazers, Jordans and running shoes with cloud-soft comfort, sustainable materials and a futuristic edge.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="images/logo2.png">
+    <!-- Google Analytics (async) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YS3DL8XHXZ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-YS3DL8XHXZ');
+    </script>
+    <!-- Elfsight AI Chatbot -->
+    <script src="https://elfsightcdn.com/platform.js" async></script>
+</head>
+
+<body>
+    <a href="#main" class="skip-link">Skip to content</a>
+
+    <div class="ambient ambient-a"></div>
+    <div class="ambient ambient-b"></div>
+    <div class="ambient ambient-c"></div>
+    <div class="progress-bar" id="progress-bar"></div>
+    <button class="back-to-top" id="back-to-top" aria-label="Back to top">↑</button>
+
+    <div class="visually-hidden-logo-title">
+        <img src="images/logo2.png" alt="Sneak In Logo">
+        <span>Sneak In — Comfortable Shoes</span>
+    </div>
+
+    <div id="loading-spinner" class="loading">Sneak In</div>
+    <div class="elfsight-app-b5048205-9048-4d18-9a8b-3829992f27cf" data-elfsight-app-lazy></div>
+
+    <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+    <header>
+        <nav>
+            <a href="#hero" class="logo">
+                <span class="logo-circle"><img src="images/logo2.png" alt=""></span>
+                <span>
+                    <span class="brand-name">Sneak In</span>
+                    <span class="brand-tag">Drop culture, daily comfort</span>
+                </span>
+            </a>
+
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#products">Shop</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#testimonials">Reviews</a></li>
+                <li><a href="#" id="track-orders-nav-btn">Track Order 📦</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+
+            <div class="nav-tools">
+                <div class="search-toggle-wrap">
+                    <button class="icon-btn" id="search-toggle" aria-label="Search products"
+                        aria-expanded="false">🔍</button>
+                    <div class="search-panel" id="search-panel">
+                        <input type="text" id="global-search" placeholder="Search Dunks, Shirts, Jeans, Jordans…"
+                            autocomplete="off">
+                        <p class="search-hint">Press Enter or keep typing — results update live.</p>
+                    </div>
+                </div>
+                <button class="icon-btn" id="wishlist-toggle" aria-label="Open wishlist">
+                    ♡
+                    <span class="icon-badge zero" id="wishlist-count">0</span>
+                </button>
+                <button class="icon-btn" id="cart-toggle" aria-label="Open cart">
+                    🛍️
+                    <span class="icon-badge zero" id="cart-count">0</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="ticker" aria-hidden="true">
+        <div class="ticker-track" id="ticker-track"></div>
+    </div>
+
+    <div class="trust-bar">
+        <div class="trust-bar-inner">
+            <div class="trust-item"><span class="trust-icon">✓</span><span>100% Authentic Guarantee</span></div>
+            <div class="trust-item"><span class="trust-icon">🛡️</span><span>Verified Sellers Only</span></div>
+            <div class="trust-item"><span class="trust-icon">🔒</span><span>Secure Checkout</span></div>
+            <div class="trust-item"><span class="trust-icon">↩</span><span>7-Day Easy Returns</span></div>
+            <div class="trust-item"><span class="trust-icon">🚚</span><span>Pan-India Express Delivery</span></div>
+        </div>
+    </div>
+
+    <!-- Dedicated Single-Page Product Full View ("In the Same Tab, Dedicated SPA Page View") -->
+    <div id="product-page-view" class="product-page-view" style="display:none;">
+        <div class="p-page-header">
+            <button type="button" class="back-home-btn" id="p-back-home">← Back to Store Feed</button>
+            <div class="p-page-breadcrumbs">
+                <span id="p-page-cat-label">Sneakers</span> / <strong id="p-page-name-breadcrumb">Air Jordan 1
+                    High</strong>
+            </div>
+            <span class="p-page-ai-badge" id="p-page-ai-badge">✨ 99.4% AI Match Score</span>
+            <span class="p-page-auth-badge">✓ 100% Authentic · Verified</span>
+        </div>
+
+        <div class="p-page-container">
+            <!-- Left: Gallery & Zoom Preview -->
+            <div class="p-page-gallery">
+                <div class="p-page-main-img-wrap">
+                    <img id="p-page-main-img" src="" alt="Product Image">
+                    <span class="p-page-tag" id="p-page-tag">25% OFF</span>
+                </div>
+                <div class="p-page-thumbs" id="p-page-thumbs"></div>
+            </div>
+
+            <!-- Right: Details, AI Fit Predictor, Size Select, Instant Buy -->
+            <div class="p-page-details">
+                <div class="p-page-code" id="p-page-code">JD-984 · Jordans</div>
+                <h1 class="p-page-title" id="p-page-title">Air Jordan 1 Retro High OG</h1>
+                <div class="p-page-pricing">
+                    <span class="p-page-mrp" id="p-page-mrp">MRP: <s>₹16,995</s></span>
+                    <span class="p-page-discount" id="p-page-discount">25% OFF</span>
+                    <span class="p-page-price" id="p-page-price">₹12,746</span>
+                </div>
+
+                <div class="p-page-section">
+                    <div class="p-page-section-header">
+                        <span class="qv-label">Select Size</span>
+                        <button type="button" id="p-page-sizeguide-btn" class="text-link-btn">Size Guide 📏</button>
+                    </div>
+                    <div class="size-row" id="p-page-sizes"></div>
+                </div>
+
+                <!-- AI Neural Fit Predictor Box -->
+                <div class="p-page-ai-fit-card">
+                    <div class="ai-fit-head">
+                        <span>🤖 SneakIn AI Fit Recommendation</span>
+                        <button type="button" id="p-page-ai-predict" class="ai-predict-btn">Analyze Precision Fit
+                            ⚡</button>
+                    </div>
+                    <div class="ai-fit-msg" id="p-page-ai-fit-msg">Select your height/weight or click Analyze for 99.8%
+                        true-to-size matching.</div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="p-page-actions">
+                    <button type="button" class="cta-button pulse-btn" id="p-page-buy-now">⚡ Instant Buy Now</button>
+                    <button type="button" class="secondary-btn" id="p-page-add-cart">Add to Cart 🛍️</button>
+                    <button type="button" class="btn-outline" id="p-page-wishlist">♡ Save</button>
+                </div>
+
+                <!-- Cyber Tech Specs -->
+                <div class="p-page-specs">
+                    <h4>⚡ Technical Specifications &amp; Features</h4>
+                    <div class="specs-grid">
+                        <div class="spec-card"><span>Cushioning</span><strong>Air Zoom Polymer</strong></div>
+                        <div class="spec-card"><span>Upper</span><strong>Full-Grain Leather</strong></div>
+                        <div class="spec-card"><span>Eco Rating</span><strong>A+ Recycled</strong></div>
+                        <div class="spec-card"><span>Delivery</span><strong>Express (1-3 Days)</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main id="main">
+        <section id="hero" class="hero">
+            <video class="hero-video" src="videos/vid2.mp4" autoplay muted loop playsinline>
+                Your browser does not support the video tag.
+            </video>
+            <div class="hero-overlay">
+                <div class="hero-content">
+                    <div class="hero-eyebrow fade-in"><span class="dot"></span> Live now · SS26 Drop &amp; Apparel
+                        Collection</div>
+                    <h1 class="fade-in">Step into comfort, style &amp; <em>the future.</em></h1>
+                    <p class="fade-in">Premium sneakers, heavyweight tees, vintage denim, activewear shorts &amp; tech
+                        fleece — built for cloud-soft daily comfort with a futuristic edge.</p>
+                    <div class="hero-actions fade-in">
+                        <a href="#products" class="cta-button ripple">Shop the drop</a>
+                        <a href="#features" class="secondary-btn">Why Sneak In</a>
+                    </div>
+                    <div class="hero-stats fade-in">
+                        <div class="hero-stat"><strong>50K+</strong><span>happy feet</span></div>
+                        <div class="hero-stat"><strong>24/7</strong><span>style support</span></div>
+                        <div class="hero-stat"><strong>4.9★</strong><span>customer love</span></div>
+                        <div class="hero-stat"><strong>80+</strong><span>styles in stock</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="products" class="shop">
+            <div class="section-heading fade-in">
+                <p class="eyebrow">Curated essentials &amp; drops</p>
+                <h2>Discover the drop that defines your next move</h2>
+                <p>From sculpted Jordans to heavyweight tees, relaxed denim jeans &amp; tech fleece activewear, every
+                    piece is engineered for comfort, confidence, and standout style.</p>
+            </div>
+
+            <div class="highlight-grid fade-in">
+                <div class="highlight-card"><span class="num">01</span>
+                    <h3>Trend-led drops</h3>
+                    <p>Sneakers, tees, denim &amp; activewear with a premium edge.</p>
+                </div>
+                <div class="highlight-card"><span class="num">02</span>
+                    <h3>All-day comfort</h3>
+                    <p>Cloud-soft cushioning &amp; breathable fabrics built for movement.</p>
+                </div>
+                <div class="highlight-card"><span class="num">03</span>
+                    <h3>Express Delivery</h3>
+                    <p>Fast doorstep delivery with real-time tracking.</p>
+                </div>
+            </div>
+
+            <div class="collections-strip fade-in" id="collections-strip">
+                <button class="collection-tile" data-collection="under-10k">
+                    <span class="collection-tile-label">Under</span>
+                    <span class="collection-tile-value">₹10,000</span>
+                </button>
+                <button class="collection-tile" data-collection="under-20k">
+                    <span class="collection-tile-label">Under</span>
+                    <span class="collection-tile-value">₹20,000</span>
+                </button>
+                <button class="collection-tile" data-collection="holy-grails">
+                    <span class="collection-tile-label">The</span>
+                    <span class="collection-tile-value">Holy Grails</span>
+                </button>
+                <button class="collection-tile" data-collection="under-retail">
+                    <span class="collection-tile-label">Best Value</span>
+                    <span class="collection-tile-value">Under Retail</span>
+                </button>
+                <button class="collection-tile" data-collection="popular-collabs">
+                    <span class="collection-tile-label">Trending</span>
+                    <span class="collection-tile-value">Popular Collabs</span>
+                </button>
+            </div>
+
+            <div class="shop-toolbar fade-in">
+                <div class="shop-search">
+                    🔎
+                    <input type="text" id="shop-search" placeholder="Search sneakers, shirts, jeans, shorts…"
+                        autocomplete="off">
+                    <button class="shop-search-clear" id="shop-search-clear" aria-label="Clear search">✕</button>
+                </div>
+                <div class="chip-row" id="chip-row">
+                    <button class="chip active" data-cat="all">All</button>
+                    <button class="chip" data-cat="slippers">Best Sellers</button>
+                    <button class="chip" data-cat="sneakers">Dunks</button>
+                    <button class="chip" data-cat="highrise">Blazers</button>
+                    <button class="chip" data-cat="sports">Jordans</button>
+                    <button class="chip" data-cat="boots">Running</button>
+                    <button class="chip" data-cat="shirts">Shirts &amp; Tees</button>
+                    <button class="chip" data-cat="jeans">Jeans &amp; Denim</button>
+                    <button class="chip" data-cat="shorts">Shorts</button>
+                    <button class="chip" data-cat="sportswear">Sportswear</button>
+                    <button class="chip" data-cat="apparel">Apparel</button>
+                </div>
+                <select class="sort-select" id="sort-select">
+                    <option value="relevance">Sort: Relevance</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="discount">Best Discount</option>
+                </select>
+            </div>
+
+            <div class="collection-filter-heading" id="collection-filter-heading" style="display:none;">
+                <div>
+                    <p class="eyebrow" style="margin-bottom:0.4rem;">Curated collection</p>
+                    <h3 id="collection-filter-title">Under ₹10,000</h3>
+                </div>
+                <button type="button" class="btn-outline-sm" id="collection-filter-clear">Clear filter ✕</button>
+            </div>
+
+            <div class="search-results" id="search-results"></div>
+            <p class="search-empty" id="search-empty">No styles match your search. Try “Shirt”, “Jeans”, “Dunk”, or
+                “Jordan”.</p>
+
+            <!-- Dedicated Collection Showcase Space -->
+            <div class="collection-showcase-space" id="collection-showcase-space" style="display:none;">
+                <div class="collection-space-banner" id="collection-space-banner">
+                    <video class="collection-space-video" id="collection-space-video" autoplay muted loop playsinline
+                        style="display:none;"></video>
+                    <div class="collection-space-overlay">
+                        <button class="back-all-btn" id="back-all-btn">← Back to All Drops</button>
+                        <span class="collection-space-eyebrow" id="collection-space-eyebrow">DEDICATED COLLECTION
+                            WORKSPACE</span>
+                        <h2 class="collection-space-title" id="collection-space-title">Shirts &amp; Tees</h2>
+                        <p class="collection-space-subtitle" id="collection-space-subtitle">Explore the complete lineup
+                            of 8 styles engineered for daily comfort.</p>
+                        <div class="collection-space-meta">
+                            <span class="badge-tag" id="collection-space-count">8 Styles Available</span>
+                            <span class="badge-tag live-badge">⚡ Live In Stock</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="collection-grid" id="collection-grid"></div>
+            </div>
+
+            <div class="browse-sections" id="browse-sections">
+                <section id="slippers" class="product-category">
+                    <div class="category-video-container">
+                        <video class="category-video" src="videos/best.mp4" autoplay muted loop playsinline></video>
+                        <div class="category-title-overlay"><span class="cat-eyebrow">Fan favorite</span><span
+                                class="cat-name">Best Sellers</span></div>
+                        <span class="category-count">10 styles</span>
+                    </div>
+                    <div class="category-products">
+                        <div class="carousel-arrow-container"><button class="carousel-btn prev enhanced-arrow"><span
+                                    class="arrow-icon">&lt;</span></button></div>
+                        <div class="carousel-container" id="slippers-carousel"></div>
+                        <div class="carousel-arrow-container"><button class="carousel-btn next enhanced-arrow"><span
+                                    class="arrow-icon">&gt;</span></button></div>
+                    </div>
+                </section>
+
+                <section id="sneakers" class="product-category">
+                    <div class="category-video-container">
+                        <video class="category-video" src="videos/dunk.mp4" autoplay muted loop playsinline></video>
+                        <div class="category-title-overlay"><span class="cat-eyebrow">Court classic</span><span
+                                class="cat-name">Dunks</span></div>
+                        <span class="category-count">10 styles</span>
+                    </div>
+                    <div class="category-products">
+                        <div class="carousel-arrow-container"><button class="carousel-btn prev enhanced-arrow"><span
+                                    class="arrow-icon">&lt;</span></button></div>
+                        <div class="carousel-container" id="sneakers-carousel"></div>
+                        <div class="carousel-arrow-container"><button class="carousel-btn next enhanced-arrow"><span
+                                    class="arrow-icon">&gt;</span></button></div>
+                    </div>
+                </section>
+
+                <section id="highrise" class="product-category">
+                    <div class="category-video-container">
+                        <video class="category-video" src="videos/blazer.mp4" autoplay muted loop playsinline></video>
+                        <div class="category-title-overlay"><span class="cat-eyebrow">Vintage lines</span><span
+                                class="cat-name">Blazers</span></div>
+                        <span class="category-count">10 styles</span>
+                    </div>
+                    <div class="category-products">
+                        <div class="carousel-arrow-container"><button class="carousel-btn prev enhanced-arrow"><span
+                                    class="arrow-icon">&lt;</span></button></div>
+                        <div class="carousel-container" id="highrise-carousel"></div>
+                        <div class="carousel-arrow-container"><button class="carousel-btn next enhanced-arrow"><span
+                                    class="arrow-icon">&gt;</span></button></div>
+                    </div>
+                </section>
+
+                <section id="sports" class="product-category">
+                    <div class="category-video-container">
+                        <video class="category-video" src="videos/jordan.mp4" autoplay muted loop playsinline></video>
+                        <div class="category-title-overlay"><span class="cat-eyebrow">Heritage grail</span><span
+                                class="cat-name">Jordans</span></div>
+                        <span class="category-count">10 styles</span>
+                    </div>
+                    <div class="category-products">
+                        <div class="carousel-arrow-container"><button class="carousel-btn prev enhanced-arrow"><span
+                                    class="arrow-icon">&lt;</span></button></div>
+                        <div class="carousel-container" id="sports-carousel"></div>
+                        <div class="carousel-arrow-container"><button class="carousel-btn next enhanced-arrow"><span
+                                    class="arrow-icon">&gt;</span></button></div>
+                    </div>
+                </section>
+
+                <section id="boots" class="product-category">
+                    <div class="category-video-container">
+                        <video class="category-video" src="videos/running.mp4" autoplay muted loop playsinline></video>
+                        <div class="category-title-overlay"><span class="cat-eyebrow">Built for miles</span><span
+                                class="cat-name">Running Shoes</span></div>
+                        <span class="category-count">10 styles</span>
+                    </div>
+                    <div class="category-products">
+                        <div class="carousel-arrow-container"><button class="carousel-btn prev enhanced-arrow"><span
+                                    class="arrow-icon">&lt;</span></button></div>
+                        <div class="carousel-container" id="boots-carousel"></div>
+                        <div class="carousel-arrow-container"><button class="carousel-btn next enhanced-arrow"><span
+                                    class="arrow-icon">&gt;</span></button></div>
+                    </div>
+                </section>
+
+                <section id="shirts" class="product-category">
+                    <div class="category-video-container category-banner-graphic banner-shirts">
+                        <div class="category-title-overlay"><span class="cat-eyebrow">Streetwear Cut</span><span
+                                class="cat-name">Shirts &amp; Tees</span></div>
+                        <span class="category-count">8 styles</span>
+                    </div>
+                    <div class="category-products">
+                        <div class="carousel-arrow-container"><button class="carousel-btn prev enhanced-arrow"><span
+                                    class="arrow-icon">&lt;</span></button></div>
+                        <div class="carousel-container" id="shirts-carousel"></div>
+                        <div class="carousel-arrow-container"><button class="carousel-btn next enhanced-arrow"><span
+                                    class="arrow-icon">&gt;</span></button></div>
+                    </div>
+                </section>
+
+                <section id="jeans" class="product-category">
+                    <div class="category-video-container category-banner-graphic banner-jeans">
+                        <div class="category-title-overlay"><span class="cat-eyebrow">Vintage &amp; Loose</span><span
+                                class="cat-name">Jeans &amp; Denim</span></div>
+                        <span class="category-count">8 styles</span>
+                    </div>
+                    <div class="category-products">
+                        <div class="carousel-arrow-container"><button class="carousel-btn prev enhanced-arrow"><span
+                                    class="arrow-icon">&lt;</span></button></div>
+                        <div class="carousel-container" id="jeans-carousel"></div>
+                        <div class="carousel-arrow-container"><button class="carousel-btn next enhanced-arrow"><span
+                                    class="arrow-icon">&gt;</span></button></div>
+                    </div>
+                </section>
+
+                <section id="shorts" class="product-category">
+                    <div class="category-video-container category-banner-graphic banner-shorts">
+                        <div class="category-title-overlay"><span class="cat-eyebrow">Daily Movement</span><span
+                                class="cat-name">Shorts</span></div>
+                        <span class="category-count">8 styles</span>
+                    </div>
+                    <div class="category-products">
+                        <div class="carousel-arrow-container"><button class="carousel-btn prev enhanced-arrow"><span
+                                    class="arrow-icon">&lt;</span></button></div>
+                        <div class="carousel-container" id="shorts-carousel"></div>
+                        <div class="carousel-arrow-container"><button class="carousel-btn next enhanced-arrow"><span
+                                    class="arrow-icon">&gt;</span></button></div>
+                    </div>
+                </section>
+
+                <section id="sportswear" class="product-category">
+                    <div class="category-video-container category-banner-graphic banner-sportswear">
+                        <div class="category-title-overlay"><span class="cat-eyebrow">Tech &amp; Active</span><span
+                                class="cat-name">Sportswear</span></div>
+                        <span class="category-count">8 styles</span>
+                    </div>
+                    <div class="category-products">
+                        <div class="carousel-arrow-container"><button class="carousel-btn prev enhanced-arrow"><span
+                                    class="arrow-icon">&lt;</span></button></div>
+                        <div class="carousel-container" id="sportswear-carousel"></div>
+                        <div class="carousel-arrow-container"><button class="carousel-btn next enhanced-arrow"><span
+                                    class="arrow-icon">&gt;</span></button></div>
+                    </div>
+                </section>
+
+                <section id="apparel" class="product-category">
+                    <div class="category-video-container">
+                        <video class="category-video" src="videos/apparel.mp4" autoplay muted loop playsinline></video>
+                        <div class="category-title-overlay"><span class="cat-eyebrow">New drops</span><span
+                                class="cat-name">Apparel</span></div>
+                        <span class="category-count">6 styles</span>
+                    </div>
+                    <div class="category-products">
+                        <div class="carousel-arrow-container"><button class="carousel-btn prev enhanced-arrow"><span
+                                    class="arrow-icon">&lt;</span></button></div>
+                        <div class="carousel-container" id="apparel-carousel"></div>
+                        <div class="carousel-arrow-container"><button class="carousel-btn next enhanced-arrow"><span
+                                    class="arrow-icon">&gt;</span></button></div>
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <section class="recently-viewed" id="recently-viewed-section" style="display:none;">
+            <div class="section-heading fade-in" style="text-align:left; margin:0 0 1.4rem;">
+                <p class="eyebrow">Pick up where you left off</p>
+                <h2 style="font-size:clamp(1.5rem,2.6vw,2rem);">Recently Viewed</h2>
+            </div>
+            <div class="recently-viewed-row" id="recently-viewed-row"></div>
+        </section>
+
+        <section id="features" class="features">
+            <p class="eyebrow fade-in" style="justify-content:center;">Why sneak in</p>
+            <h2 class="fade-in">Built for people who actually move</h2>
+            <div class="feature-grid">
+                <div class="feature-item fade-in">
+                    <span class="num">01</span>
+                    <img src="images/picsus.png" alt="Sustainable materials">
+                    <h3>Sustainable Materials</h3>
+                    <p>Made from recycled and eco-friendly materials, reducing environmental impact while ensuring
+                        durability and comfort.</p>
+                </div>
+                <div class="feature-item fade-in">
+                    <span class="num">02</span>
+                    <img src="images/piccom.png" alt="Ultimate comfort">
+                    <h3>Ultimate Comfort</h3>
+                    <p>Engineered insoles and breathable lining provide superior cushioning for all-day wear, no matter
+                        your activity.</p>
+                </div>
+                <div class="feature-item fade-in">
+                    <span class="num">03</span>
+                    <img src="images/picsty.png" alt="Timeless style">
+                    <h3>Timeless Style</h3>
+                    <p>Modern, versatile designs that seamlessly fit any wardrobe — perfect for work, travel, or
+                        leisure.</p>
+                </div>
+                <div class="feature-item fade-in">
+                    <span class="num">04</span>
+                    <img src="images/picwat.png" alt="Waterproof technology">
+                    <h3>Waterproof Technology</h3>
+                    <p>Advanced waterproofing keeps your feet dry in any weather, so you can step out with confidence —
+                        rain or shine.</p>
+                </div>
+                <div class="feature-item fade-in">
+                    <span class="num">05</span>
+                    <img src="images/picdis.png" alt="Lightweight design">
+                    <h3>Lightweight Design</h3>
+                    <h3>Lightweight Design</h3>
+                    <p>Ultra-light construction reduces fatigue, making every step feel effortless and energetic
+                        throughout your day.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials" class="testimonials">
+            <h2 class="fade-in">What Our Customers Say</h2>
+            <div class="testimonial-slider">
+                <div class="testimonial active">
+                    <div class="stars">★★★★★</div>
+                    <p>"Sneak In shoes are a game-changer for comfort! I wore them for a full day and my feet felt
+                        amazing."</p><cite>Ankit</cite>
+                </div>
+                <div class="testimonial">
+                    <div class="stars">★★★★★</div>
+                    <p>"Sustainable and stylish – love them! The eco-friendly materials make me feel good about my
+                        purchase."</p><cite>Arpit</cite>
+                </div>
+                <div class="testimonial">
+                    <div class="stars">★★★★★</div>
+                    <p>"Best purchase I've made this year. The design is modern and fits every outfit."</p>
+                    <cite>Vibhor</cite>
+                </div>
+                <div class="testimonial">
+                    <div class="stars">★★★★☆</div>
+                    <p>"Waterproof and lightweight! Perfect for my daily commute and rainy days."</p><cite>Priya</cite>
+                </div>
+                <div class="testimonial">
+                    <div class="stars">★★★★★</div>
+                    <p>"The comfort level is unmatched. I recommend Sneak In to all my friends."</p><cite>Rahul</cite>
+                </div>
+                <div class="testimonial">
+                    <div class="stars">★★★★★</div>
+                    <p>"Customer service was excellent and the shoes arrived quickly. Will buy again!"</p>
+                    <cite>Simran</cite>
+                </div>
+            </div>
+            <div class="slider-dots" id="slider-dots">
+                <span class="dot active" data-slide="0"></span>
+                <span class="dot" data-slide="1"></span>
+                <span class="dot" data-slide="2"></span>
+                <span class="dot" data-slide="3"></span>
+                <span class="dot" data-slide="4"></span>
+                <span class="dot" data-slide="5"></span>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <p class="eyebrow fade-in" style="justify-content:center;">Stay in the loop</p>
+            <h2 class="fade-in">Get drops before they sell out</h2>
+            <form id="newsletter-form">
+                <input type="email" id="email" placeholder="Enter your email" required aria-label="Email address">
+                <button type="submit" class="cta-button">Subscribe</button>
+            </form>
+            <p id="form-message" role="status"></p>
+            <div class="contact-options">
+                <a href="https://www.linkedin.com/company/sneakinpeace/" target="_blank" rel="noopener"
+                    class="contact-icon" title="LinkedIn"><img
+                        src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg"
+                        alt="LinkedIn"></a>
+                <a href="https://www.instagram.com/sneak._in/" target="_blank" rel="noopener" class="contact-icon"
+                    title="Instagram"><img
+                        src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg"
+                        alt="Instagram"></a>
+                <a href="https://www.facebook.com/SneakinIn" target="_blank" rel="noopener" class="contact-icon"
+                    title="Facebook"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg"
+                        alt="Facebook"></a>
+            </div>
+            <div class="contact-details">
+                <span class="contact-text phone">Phone - +91 7876857173</span>
+                <span class="contact-text email">Email - chowdharyankit63@gmail.com</span>
+            </div>
+        </section>
+    </main>
+
+    <section class="press-strip">
+        <p class="press-strip-label">As trusted by 50,000+ sneakerheads across India</p>
+        <div class="press-strip-row">
+            <span>THE ECONOMIC TIMES</span>
+            <span>ENTREPRENEUR</span>
+            <span>YOURSTORY</span>
+            <span>MINT</span>
+            <span>FASHION UNITED</span>
+            <span>STREET REPORT</span>
+        </div>
+    </section>
+
+    <section class="app-banner">
+        <div class="app-banner-content">
+            <p class="eyebrow" style="color: var(--lime);">Shop on the go</p>
+            <h2>Get the Sneak In app for drop alerts, faster checkout &amp; app-only prices.</h2>
+            <div class="app-banner-actions">
+                <a href="#" class="app-store-btn" aria-label="Download on the App Store">
+                    <span class="app-store-icon"></span>
+                    <span><small>Download on the</small>App Store</span>
+                </a>
+                <a href="#" class="app-store-btn" aria-label="Get it on Google Play">
+                    <span class="app-store-icon">▶</span>
+                    <span><small>Get it on</small>Google Play</span>
+                </a>
+            </div>
+        </div>
+        <div class="app-banner-badge">
+            <span class="app-banner-badge-num">4.9★</span>
+            <span>Rated by 12K+ shoppers</span>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col footer-col-brand">
+                <div class="footer-brand-row">
+                    <span class="logo-circle"><img src="images/logo2.png" alt=""></span>
+                    <span class="footer-brand">SNEAK IN™</span>
+                </div>
+                <p class="footer-tagline">Drop culture, daily comfort. 100% authentic sneakers, streetwear &amp; apparel — verified before it ships.</p>
+                <div class="footer-trust-mini">
+                    <span>✓ Authenticity Verified</span>
+                    <span>🔒 Secure Payments</span>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Shop</h4>
+                <ul class="footer-links">
+                    <li><a href="#products">Dunks</a></li>
+                    <li><a href="#products">Jordans</a></li>
+                    <li><a href="#products">Blazers</a></li>
+                    <li><a href="#products">Running Shoes</a></li>
+                    <li><a href="#products">Shirts &amp; Tees</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Know More</h4>
+                <ul class="footer-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Cancellations &amp; Returns</a></li>
+                    <li><a href="#">Shipping Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Get in touch</h4>
+                <ul class="footer-links">
+                    <li>Mon–Sat, 10:30am – 7:00pm</li>
+                    <li><a href="tel:+917876857173">+91 7876857173</a></li>
+                    <li><a href="mailto:chowdharyankit63@gmail.com">chowdharyankit63@gmail.com</a></li>
+                </ul>
+                <div class="footer-social">
+                    <a href="https://www.linkedin.com/company/sneakinpeace/" target="_blank" rel="noopener" title="LinkedIn"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn"></a>
+                    <a href="https://www.instagram.com/sneak._in/" target="_blank" rel="noopener" title="Instagram"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram"></a>
+                    <a href="https://www.facebook.com/SneakinIn" target="_blank" rel="noopener" title="Facebook"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Sneak In. All rights reserved.</p>
+            <ul>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#hero">Back to top ↑</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- Quick View Modal -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <button class="close" id="modal-close" aria-label="Close">&times;</button>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Cart Drawer -->
+    <div class="drawer-overlay" id="cart-overlay"></div>
+    <aside class="drawer" id="cart-drawer" aria-label="Shopping cart">
+        <div class="drawer-header">
+            <h3>Your Cart</h3>
+            <button class="drawer-close" id="cart-close" aria-label="Close cart">&times;</button>
+        </div>
+        <div class="drawer-shipping">
+            <span id="shipping-msg">Add ₹4,999 more for free express shipping</span>
+            <div class="shipping-bar">
+                <div class="shipping-bar-fill" id="shipping-bar-fill"></div>
+            </div>
+        </div>
+        <div class="drawer-body" id="cart-body"></div>
+        <div class="drawer-footer">
+            <div class="promo-box">
+                <input type="text" id="cart-promo-code" placeholder="Promo code (e.g. SNEAK20)"
+                    style="text-transform:uppercase;">
+                <button type="button" id="cart-promo-apply" class="btn-outline-sm">Apply</button>
+            </div>
+            <div id="cart-promo-applied" class="promo-applied-tag" style="display:none;"></div>
+            <div class="drawer-subtotal-row"><span>Subtotal</span><span id="cart-subtotal">₹0</span></div>
+            <div class="drawer-subtotal-row discount-row" id="cart-discount-wrap"
+                style="display:none; color: var(--coral);">
+                <span>Discount (<span id="discount-code-name"></span>)</span><span id="cart-discount-val">-₹0</span>
+            </div>
+            <div class="drawer-subtotal-row total-row"><span>Est. Total</span><span id="cart-final-total">₹0</span>
+            </div>
+            <button class="cta-button" id="cart-checkout">Proceed to Checkout</button>
+        </div>
+    </aside>
+
+    <!-- Wishlist Drawer -->
+    <div class="drawer-overlay" id="wishlist-overlay"></div>
+    <aside class="drawer" id="wishlist-drawer" aria-label="Wishlist">
+        <div class="drawer-header">
+            <h3>Your Wishlist</h3>
+            <button class="drawer-close" id="wishlist-close" aria-label="Close wishlist">&times;</button>
+        </div>
+        <div class="drawer-body" id="wishlist-body"></div>
+    </aside>
+
+    <!-- Payment & Checkout Modal -->
+    <div id="payment-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="payment-title">
+        <div class="modal-content payment-modal-content">
+            <button class="close" id="payment-close" aria-label="Close payment modal">&times;</button>
+            <div class="payment-header">
+                <div>
+                    <p class="eyebrow">Express Delivery &amp; Checkout</p>
+                    <h3 id="payment-title">Complete your order</h3>
+                </div>
+                <span class="payment-badge">🔒 SSL 256-Bit Encrypted</span>
+            </div>
+
+            <!-- Checkout Step Bar -->
+            <div class="checkout-step-bar">
+                <div class="step-item active" id="step-pill-1"><span>1</span> Address &amp; Delivery</div>
+                <div class="step-line"></div>
+                <div class="step-item" id="step-pill-2"><span>2</span> Payment</div>
+                <div class="step-line"></div>
+                <div class="step-item" id="step-pill-3"><span>3</span> Review &amp; Order</div>
+            </div>
+
+            <form id="payment-form" class="payment-form">
+                <div class="pm-steps">
+                    <!-- Step 1: Address selection & Delivery Options -->
+                    <div class="pm-step" data-step="1" id="pm-step-1">
+                        <!-- High-Tech GPS Auto-Detect Bar -->
+                        <div class="gps-location-bar">
+                            <div class="gps-bar-header">
+                                <button type="button" class="gps-btn pulse-glow" id="gps-detect-btn">
+                                    <span class="gps-icon">🛰️</span> Auto-Detect My Location (GPS)
+                                </button>
+                                <span class="gps-accuracy-badge" id="gps-accuracy-badge" style="display:none;">Accuracy:
+                                    ±5m</span>
+                            </div>
+                            <div class="gps-status" id="gps-status" style="display:none;"></div>
+                        </div>
+
+                        <div class="payment-row" id="saved-address-container">
+                            <label for="saved-addresses">Saved Shipping Addresses</label>
+                            <select id="saved-addresses">
+                                <option value="">+ Add a new delivery address</option>
+                            </select>
+                        </div>
+
+                        <div class="payment-row">
+                            <label>Address Type Tag</label>
+                            <div class="address-tags-row" id="address-tags-row">
+                                <button type="button" class="addr-chip active" data-tag="Home">🏠 Home</button>
+                                <button type="button" class="addr-chip" data-tag="Office">🏢 Work / Office</button>
+                                <button type="button" class="addr-chip" data-tag="Locker">📦 Pickup Hub /
+                                    Locker</button>
+                            </div>
+                        </div>
+
+                        <div class="payment-grid">
+                            <div class="payment-row">
+                                <label for="payer-name">Full name *</label>
+                                <input id="payer-name" name="payerName" type="text" placeholder="e.g. Ankit Chowdhary"
+                                    required>
+                            </div>
+                            <div class="payment-row">
+                                <label for="ship-phone">Mobile Phone *</label>
+                                <input id="ship-phone" name="shipPhone" type="tel" inputmode="tel"
+                                    placeholder="10-digit mobile number" required>
+                            </div>
+                        </div>
+
+                        <div class="payment-row">
+                            <label for="payer-email">Email address (for order updates) *</label>
+                            <input id="payer-email" name="payerEmail" type="email" placeholder="you@example.com"
+                                required>
+                        </div>
+
+                        <div class="payment-row">
+                            <label for="ship-line1">House / Flat / Street Address *</label>
+                            <input id="ship-line1" name="shipLine1" type="text"
+                                placeholder="House/Flat No., Building Name, Street" required>
+                        </div>
+                        <div class="payment-row">
+                            <label for="ship-line2">Landmark / Locality (Optional)</label>
+                            <input id="ship-line2" name="shipLine2" type="text"
+                                placeholder="Near metro station, landmark, etc.">
+                        </div>
+
+                        <div class="payment-grid">
+                            <div class="payment-row">
+                                <label for="ship-postal">PIN / Postal Code * <span class="pin-hint">(Auto-fills City
+                                        &amp; State)</span></label>
+                                <input id="ship-postal" name="shipPostal" type="text" placeholder="6-digit PIN code"
+                                    required maxlength="6">
+                            </div>
+                            <div class="payment-row">
+                                <label for="ship-city">City *</label>
+                                <input id="ship-city" name="shipCity" type="text" placeholder="City" required>
+                            </div>
+                        </div>
+
+                        <div class="payment-row">
+                            <label for="ship-state">State / Region *</label>
+                            <input id="ship-state" name="shipState" type="text" placeholder="State" required>
+                        </div>
+
+                        <div class="payment-row">
+                            <label>Delivery Method &amp; Speed</label>
+                            <div class="delivery-methods">
+                                <label class="delivery-option active">
+                                    <input type="radio" name="shippingMethod" value="standard" checked>
+                                    <div class="delivery-info">
+                                        <strong>Standard Express (3-5 Days)</strong>
+                                        <span>Free on orders over ₹4,999 (else ₹199)</span>
+                                    </div>
+                                </label>
+                                <label class="delivery-option">
+                                    <input type="radio" name="shippingMethod" value="express">
+                                    <div class="delivery-info">
+                                        <strong>Priority Air Express (1-2 Days)</strong>
+                                        <span>+₹299 · Guaranteed superfast delivery</span>
+                                    </div>
+                                </label>
+                                <label class="delivery-option">
+                                    <input type="radio" name="shippingMethod" value="sameday">
+                                    <div class="delivery-info">
+                                        <strong>Same-Day Metro Delivery</strong>
+                                        <span>+₹499 · Delivered within 12 hours</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="pm-controls">
+                            <button type="button" class="cta-button" id="pm1-next">Continue to Payment →</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Payment method -->
+                    <div class="pm-step" data-step="2" id="pm-step-2" style="display:none;">
+                        <div class="payment-row">
+                            <label>Select Payment Option</label>
+                            <div class="payment-methods-grid">
+                                <label class="pm-tab active"><input type="radio" name="paymentMethod" value="card"
+                                        checked> 💳 Card</label>
+                                <label class="pm-tab"><input type="radio" name="paymentMethod" value="upi"> ⚡ Instant
+                                    UPI</label>
+                                <label class="pm-tab"><input type="radio" name="paymentMethod" value="netbanking"> 🏦
+                                    Net Banking</label>
+                                <label class="pm-tab"><input type="radio" name="paymentMethod" value="cod"> 💵 Cash on
+                                    Delivery</label>
+                            </div>
+                        </div>
+
+                        <!-- Card Fields -->
+                        <div id="pm-card-fields" class="pm-method-content">
+                            <div class="card-brand-preview" id="card-brand-badge">DEBIT / CREDIT CARD</div>
+                            <div class="payment-row">
+                                <label for="card-number">Card Number</label>
+                                <input id="card-number" name="cardNumber" type="text" inputmode="numeric"
+                                    placeholder="4532 •••• •••• 8921" maxlength="19">
+                            </div>
+                            <div class="payment-grid">
+                                <div class="payment-row">
+                                    <label for="card-expiry">Expiry Date</label>
+                                    <input id="card-expiry" name="cardExpiry" type="text" placeholder="MM/YY"
+                                        maxlength="5">
+                                </div>
+                                <div class="payment-row">
+                                    <label for="card-cvv">CVV</label>
+                                    <input id="card-cvv" name="cardCVV" type="password" inputmode="numeric"
+                                        placeholder="123" maxlength="4">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- UPI Fields -->
+                        <div id="pm-upi-fields" class="pm-method-content" style="display:none;">
+                            <div class="hitech-qr-wrapper">
+                                <div class="qr-scanner-frame">
+                                    <span class="corner top-left"></span>
+                                    <span class="corner top-right"></span>
+                                    <span class="corner bottom-left"></span>
+                                    <span class="corner bottom-right"></span>
+                                    <div class="laser-line"></div>
+                                    <img src="images/payment_qr.png" alt="Official Merchant Payment QR"
+                                        class="official-qr-img">
+                                </div>
+                                <div class="qr-info-badge">
+                                    <span class="upi-status-dot"></span>
+                                    <strong>OFFICIAL MERCHANT SCANNER</strong>
+                                    <span class="merchant-vpa">sneakin@upi · Verified Merchant</span>
+                                </div>
+                                <div class="quick-upi-apps">
+                                    <span class="app-pill">GPay</span>
+                                    <span class="app-pill">PhonePe</span>
+                                    <span class="app-pill">Paytm</span>
+                                    <span class="app-pill">BHIM</span>
+                                </div>
+                            </div>
+                            <div class="upi-or-divider"><span>OR ENTER VIRTUAL UPI ID</span></div>
+                            <div class="payment-row">
+                                <label for="upi-id">UPI ID / VPA Address</label>
+                                <input id="upi-id" name="upiId" type="text" placeholder="username@upi or mobile@paytm">
+                            </div>
+                        </div>
+
+                        <!-- Net Banking -->
+                        <div id="pm-netbanking-fields" class="pm-method-content" style="display:none;">
+                            <div class="payment-row">
+                                <label for="bank-select">Select Popular Bank</label>
+                                <select id="bank-select">
+                                    <option value="hdfc">HDFC Bank</option>
+                                    <option value="icici">ICICI Bank</option>
+                                    <option value="sbi">State Bank of India (SBI)</option>
+                                    <option value="axis">Axis Bank</option>
+                                    <option value="kotak">Kotak Mahindra</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- COD Note -->
+                        <div id="pm-cod-note" class="pm-method-content" style="display:none;">
+                            <div class="cod-banner">
+                                📦 Pay in cash or via UPI Scanner when the courier agent delivers your parcel to your
+                                door.
+                            </div>
+                        </div>
+
+                        <div class="pm-controls">
+                            <button type="button" class="btn-outline" id="pm2-back">← Back to Address</button>
+                            <button type="button" class="cta-button" id="pm2-next">Review Order Details →</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Review & Place Order -->
+                    <div class="pm-step" data-step="3" id="pm-step-3" style="display:none;">
+                        <div class="payment-summary review-summary">
+                            <div class="review-box">
+                                <span class="review-label">Shipping Destination</span>
+                                <div id="review-address" class="review-val"></div>
+                            </div>
+                            <div class="review-box">
+                                <span class="review-label">Payment Method</span>
+                                <div id="review-method" class="review-val"></div>
+                            </div>
+                            <div class="review-box">
+                                <span class="review-label">Delivery Speed</span>
+                                <div id="review-shipping-speed" class="review-val">Standard Express</div>
+                            </div>
+                            <div class="review-breakdown">
+                                <div class="rev-row"><span>Items Subtotal</span><span id="rev-subtotal">₹0</span></div>
+                                <div class="rev-row" id="rev-discount-row" style="display:none; color: var(--coral);">
+                                    <span>Promo Discount</span><span id="rev-discount">-₹0</span></div>
+                                <div class="rev-row"><span>Shipping &amp; Delivery</span><span
+                                        id="rev-shipping">₹0</span></div>
+                                <div class="rev-row rev-total"><span>Grand Total</span><strong
+                                        id="payment-total">₹0</strong></div>
+                            </div>
+                        </div>
+                        <div class="pm-controls">
+                            <button type="button" class="btn-outline" id="pm3-back">← Back</button>
+                            <button type="submit" class="cta-button pulse-btn" id="pm-pay">Confirm &amp; Place Order
+                                🎉</button>
+                        </div>
+                        <p class="payment-small">By clicking place order, you agree to Sneak In's <a href="#">Terms of
+                                Sale</a> &amp; <a href="#">Return Policy</a>.</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Order Tracking / History Modal -->
+    <div id="orders-modal" class="modal" aria-hidden="true">
+        <div class="modal-content orders-modal-content">
+            <button class="close" id="orders-close" aria-label="Close orders modal">&times;</button>
+            <div class="payment-header">
+                <div>
+                    <p class="eyebrow">Sneak In Tracker</p>
+                    <h3>Your Orders &amp; Shipment Status</h3>
+                </div>
+            </div>
+            <div id="orders-list-body">
+                <!-- Dynamically filled -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Success / Confirmation Modal -->
+    <div id="order-success-modal" class="modal" aria-hidden="true">
+        <div class="modal-content success-modal-content">
+            <div class="success-icon">🎉</div>
+            <h2>Order Placed Successfully!</h2>
+            <p class="success-sub">Thank you for your order. We're getting your drop ready to ship!</p>
+
+            <div class="order-receipt-card" id="success-receipt">
+                <!-- Dynamically filled -->
+            </div>
+
+            <div class="success-actions">
+                <button class="cta-button" id="success-track-btn">Track Order Status 🚚</button>
+                <button class="btn-outline" id="success-continue-btn">Continue Shopping</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Size Guide Modal -->
+    <div id="sizeguide-modal" class="modal" aria-hidden="true">
+        <div class="modal-content sizeguide-modal-content">
+            <button class="close" id="sizeguide-close" aria-label="Close size guide">&times;</button>
+            <div class="payment-header">
+                <div>
+                    <p class="eyebrow">Fit Guide</p>
+                    <h3>Sneak In Size Chart</h3>
+                </div>
+            </div>
+            <div class="sizeguide-tables">
+                <h4>👟 Footwear Sizing (Unisex)</h4>
+                <table class="size-table">
+                    <thead>
+                        <tr>
+                            <th>UK / INDIA</th>
+                            <th>US Men</th>
+                            <th>US Women</th>
+                            <th>EU</th>
+                            <th>Foot Length (cm)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>UK 6</td>
+                            <td>7</td>
+                            <td>8.5</td>
+                            <td>40</td>
+                            <td>24.5 cm</td>
+                        </tr>
+                        <tr>
+                            <td>UK 7</td>
+                            <td>8</td>
+                            <td>9.5</td>
+                            <td>41</td>
+                            <td>25.5 cm</td>
+                        </tr>
+                        <tr>
+                            <td>UK 8</td>
+                            <td>9</td>
+                            <td>10.5</td>
+                            <td>42.5</td>
+                            <td>26.5 cm</td>
+                        </tr>
+                        <tr>
+                            <td>UK 9</td>
+                            <td>10</td>
+                            <td>11.5</td>
+                            <td>44</td>
+                            <td>27.5 cm</td>
+                        </tr>
+                        <tr>
+                            <td>UK 10</td>
+                            <td>11</td>
+                            <td>12.5</td>
+                            <td>45</td>
+                            <td>28.5 cm</td>
+                        </tr>
+                        <tr>
+                            <td>UK 11</td>
+                            <td>12</td>
+                            <td>13.5</td>
+                            <td>46</td>
+                            <td>29.5 cm</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 style="margin-top:1.5rem;">👕 Apparel Sizing (Shirts, Jeans, Shorts, Activewear)</h4>
+                <table class="size-table">
+                    <thead>
+                        <tr>
+                            <th>Size</th>
+                            <th>Chest (Inches)</th>
+                            <th>Waist (Inches)</th>
+                            <th>Hips (Inches)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>S</td>
+                            <td>36 - 38"</td>
+                            <td>28 - 30"</td>
+                            <td>36 - 38"</td>
+                        </tr>
+                        <tr>
+                            <td>M</td>
+                            <td>39 - 41"</td>
+                            <td>31 - 33"</td>
+                            <td>39 - 41"</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>42 - 44"</td>
+                            <td>34 - 36"</td>
+                            <td>42 - 44"</td>
+                        </tr>
+                        <tr>
+                            <td>XL</td>
+                            <td>45 - 47"</td>
+                            <td>37 - 39"</td>
+                            <td>45 - 47"</td>
+                        </tr>
+                        <tr>
+                            <td>XXL</td>
+                            <td>48 - 50"</td>
+                            <td>40 - 42"</td>
+                            <td>48 - 50"</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Neural Assistant Floating Widget -->
+    <div class="ai-assistant-floating" id="ai-assistant-floating">
+        <button class="ai-assistant-btn" id="ai-assistant-btn" aria-label="Open AI Neural Assistant">
+            <span class="ai-btn-pulse"></span>
+            <span class="ai-btn-icon">🧠</span>
+            <span class="ai-btn-text">SneakIn AI Assistant</span>
+        </button>
+    </div>
+
+    <!-- AI Neural Assistant Drawer Modal -->
+    <div id="ai-modal" class="modal" aria-hidden="true">
+        <div class="modal-content ai-modal-content">
+            <button class="close" id="ai-modal-close" aria-label="Close AI Assistant">&times;</button>
+            <div class="ai-header">
+                <div class="ai-header-title">
+                    <span class="ai-live-dot"></span>
+                    <div>
+                        <span class="ai-badge">NEURAL AI STYLIST v4.2</span>
+                        <h3>SneakIn AI Neural Assistant</h3>
+                    </div>
+                </div>
+                <p class="ai-header-sub">Ask AI for fit recommendations, outfit matching, or custom style advice.</p>
+            </div>
+            <div class="ai-chat-body" id="ai-chat-body">
+                <div class="ai-msg bot-msg">
+                    <span class="ai-avatar">🤖</span>
+                    <div class="msg-text">
+                        Hello! I am your <strong>SneakIn AI Stylist</strong>. What kind of outfit or sneakers are you
+                        looking for today?
+                        <div class="ai-quick-prompts">
+                            <button type="button" class="ai-prompt-btn"
+                                data-prompt="Find best Dunk sneakers under ₹8,000">👟 Dunks under ₹8K</button>
+                            <button type="button" class="ai-prompt-btn"
+                                data-prompt="Suggest an outfit for gym activewear">🏋️ Gym Activewear</button>
+                            <button type="button" class="ai-prompt-btn"
+                                data-prompt="Best streetwear oversize tee and denim combo">🔥 Streetwear Fit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form id="ai-chat-form" class="ai-chat-form">
+                <input type="text" id="ai-chat-input" placeholder="Ask AI: 'Find Jordan 1s' or 'Jeans fit for 6ft'…"
+                    autocomplete="off">
+                <button type="submit" class="ai-send-btn">Send ⚡</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="media.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
