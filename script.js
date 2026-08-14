@@ -144,6 +144,50 @@ Object.entries(RAW_PRODUCTS).forEach(([cat, items]) => {
   });
 });
 
+/* ---------- SEO: Dynamic Product Schema Injection ---------- */
+function injectProductSchema() {
+  if (typeof document === 'undefined') return;
+  const existing = document.getElementById('product-jsonld');
+  if (existing) existing.remove();
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Sneak In Catalog",
+    "numberOfItems": PRODUCTS.length,
+    "itemListElement": PRODUCTS.map((p, idx) => ({
+      "@type": "ListItem",
+      "position": idx + 1,
+      "item": {
+        "@type": "Product",
+        "name": p.name,
+        "sku": p.code,
+        "image": `https://sneakin.com/${p.img}`,
+        "description": `Buy ${p.name} at Sneak In. ${CATEGORY_META[p.category]?.subtitle || ''}`,
+        "brand": {
+          "@type": "Brand",
+          "name": p.name.includes("Jordan") ? "Air Jordan" : "Nike"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": p.price,
+          "priceCurrency": "INR",
+          "availability": "https://schema.org/InStock",
+          "itemCondition": "https://schema.org/NewCondition",
+          "url": `https://sneakin.com/#${p.category}`
+        }
+      }
+    }))
+  };
+
+  const script = document.createElement('script');
+  script.id = 'product-jsonld';
+  script.type = 'application/ld+json';
+  script.textContent = JSON.stringify(schema);
+  document.head.appendChild(script);
+}
+injectProductSchema();
+
 const money = (n) => '₹' + Number(n).toLocaleString('en-IN');
 
 /* ---------- State (Persisted) ---------- */
@@ -678,29 +722,27 @@ function renderCart() {
     }).join('');
   }
 
-  const subtotal = cartSubtotal();
-  const discount = calculateDiscount(subtotal);
-  const finalTotal = Math.max(0, subtotal - discount);
+  const totals = getCheckoutTotals('standard');
 
-  subtotalEl.textContent = money(subtotal);
+  subtotalEl.textContent = money(totals.subtotal);
 
-  if (discount > 0) {
+  if (totals.discount > 0) {
     if (discountWrap) discountWrap.style.display = 'flex';
     if (discountCodeName) discountCodeName.textContent = appliedCoupon.code;
-    if (discountValEl) discountValEl.textContent = `-${money(discount)}`;
+    if (discountValEl) discountValEl.textContent = `-${money(totals.discount)}`;
   } else {
     if (discountWrap) discountWrap.style.display = 'none';
   }
 
-  if (finalTotalEl) finalTotalEl.textContent = money(finalTotal);
+  if (finalTotalEl) finalTotalEl.textContent = money(totals.grandTotal);
 
-  const pct = Math.min(100, (subtotal / FREE_SHIP_THRESHOLD) * 100);
+  const pct = Math.min(100, (totals.subtotal / FREE_SHIP_THRESHOLD) * 100);
   if (fillEl) fillEl.style.width = pct + '%';
   if (msgEl) {
-    if (subtotal >= FREE_SHIP_THRESHOLD || (appliedCoupon && appliedCoupon.type === 'freeship')) {
+    if (totals.subtotal >= FREE_SHIP_THRESHOLD || (appliedCoupon && appliedCoupon.type === 'freeship')) {
       msgEl.textContent = 'You’ve unlocked free express shipping 🎉';
     } else {
-      msgEl.textContent = `Add ${money(FREE_SHIP_THRESHOLD - subtotal)} more for free express shipping`;
+      msgEl.textContent = `Add ${money(FREE_SHIP_THRESHOLD - totals.subtotal)} more for free express shipping`;
     }
   }
 
@@ -984,34 +1026,111 @@ function clearCart() {
 }
 
 /* ---------- Checkout / Multi-Step Payment System ---------- */
-let paymentState = { step: 1, method: 'card', shippingMethod: 'standard', upiScanned: false };
+let paymentState = {
+  step: 1,
+  method: 'card',
+  shippingMethod: 'standard',
+  upiScanned: false,
+  useSneakCoins: false,
+  useInsurance: false,
+  cryptoToken: 'eth',
+  bnplMonths: 3
+};
+
+function getCheckoutTotals(shippingSpeedOverride) {
+  const subtotal = cartSubtotal();
+  const discount = calculateDiscount(subtotal);
+  const netItems = Math.max(0, subtotal - discount);
+
+  const speedRadio = document.querySelector('input[name="shippingMethod"]:checked');
+  const speed = shippingSpeedOverride || (speedRadio ? speedRadio.value : (paymentState.shippingMethod || 'standard'));
+
+  let shippingFee = 0;
+  if (subtotal > 0) {
+    if (appliedCoupon && appliedCoupon.type === 'freeship') {
+      if (speed === 'express') shippingFee = 100;
+      else if (speed === 'sameday') shippingFee = 300;
+      else shippingFee = 0;
+    } else {
+      if (speed === 'express') shippingFee = 299;
+      else if (speed === 'sameday') shippingFee = 499;
+      else shippingFee = netItems >= FREE_SHIP_THRESHOLD ? 0 : 199;
+    }
+  }
+
+  const coinsEl = document.getElementById('toggle-sneakcoins');
+  const coinsChecked = coinsEl ? coinsEl.checked : false;
+  const coinsDiscount = (coinsChecked && subtotal > 0) ? Math.min(500, netItems) : 0;
+
+  const insuranceEl = document.getElementById('toggle-insurance');
+  const insuranceChecked = insuranceEl ? insuranceEl.checked : false;
+  const insuranceFee = (insuranceChecked && subtotal > 0) ? 99 : 0;
+
+  const grandTotal = subtotal > 0 ? Math.max(0, netItems - coinsDiscount) + shippingFee + insuranceFee : 0;
+
+  return {
+    subtotal,
+    discount,
+    netItems,
+    shippingSpeed: speed,
+    shippingFee,
+    coinsDiscount,
+    insuranceFee,
+    grandTotal
+  };
+}
 
 function getShippingFee(subtotal, speed) {
-  if (appliedCoupon && appliedCoupon.type === 'freeship') {
-    if (speed === 'express') return 100;
-    if (speed === 'sameday') return 300;
-    return 0;
-  }
-  if (speed === 'express') return 299;
-  if (speed === 'sameday') return 499;
-  return subtotal >= FREE_SHIP_THRESHOLD ? 0 : 199;
+  return getCheckoutTotals(speed).shippingFee;
+}
+
+function startStockReservationTimer() {
+  const clockEl = document.getElementById('stock-timer-clock');
+  if (!clockEl) return;
+  let seconds = 9 * 60 + 59;
+  if (window.stockTimerInterval) clearInterval(window.stockTimerInterval);
+
+  window.stockTimerInterval = setInterval(() => {
+    seconds--;
+    if (seconds <= 0) {
+      clearInterval(window.stockTimerInterval);
+      clockEl.textContent = '00:00';
+      return;
+    }
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    clockEl.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  }, 1000);
 }
 
 function openPaymentModal() {
   const form = document.getElementById('payment-form');
   if (form) form.reset();
-  paymentState = { step: 1, method: 'card', shippingMethod: 'standard', upiScanned: false };
+  paymentState = {
+    step: 1,
+    method: 'card',
+    shippingMethod: 'standard',
+    upiScanned: false,
+    useSneakCoins: false,
+    useInsurance: false,
+    cryptoToken: 'eth',
+    bnplMonths: 3
+  };
+
+  const coinsEl = document.getElementById('toggle-sneakcoins');
+  if (coinsEl) coinsEl.checked = false;
+  const insuranceEl = document.getElementById('toggle-insurance');
+  if (insuranceEl) insuranceEl.checked = false;
 
   populateSavedAddresses();
 
-  // prefill default saved address if available
   if (savedAddresses.length > 0) {
     fillAddressForm(savedAddresses[0]);
   }
 
   setPaymentMethodUI('card');
-  const qr = document.getElementById('upi-qr'); if (qr) qr.style.display = 'none';
   showPaymentStep(1);
+  startStockReservationTimer();
 
   const modal = document.getElementById('payment-modal');
   if (modal) {
@@ -1059,14 +1178,15 @@ function populateSavedAddresses() {
 
 function fillAddressForm(addr) {
   if (!addr) return;
-  document.getElementById('payer-name').value = addr.name || '';
-  document.getElementById('payer-email').value = addr.email || '';
-  document.getElementById('ship-phone').value = addr.phone || '';
-  document.getElementById('ship-line1').value = addr.line1 || '';
-  document.getElementById('ship-line2').value = addr.line2 || '';
-  document.getElementById('ship-city').value = addr.city || '';
-  document.getElementById('ship-postal').value = addr.postal || '';
-  document.getElementById('ship-state').value = addr.state || '';
+  if (document.getElementById('payer-name')) document.getElementById('payer-name').value = addr.name || '';
+  if (document.getElementById('payer-email')) document.getElementById('payer-email').value = addr.email || '';
+  if (document.getElementById('ship-phone')) document.getElementById('ship-phone').value = addr.phone || '';
+  if (document.getElementById('ship-line1')) document.getElementById('ship-line1').value = addr.line1 || '';
+  if (document.getElementById('ship-line2')) document.getElementById('ship-line2').value = addr.line2 || '';
+  if (document.getElementById('ship-city')) document.getElementById('ship-city').value = addr.city || '';
+  if (document.getElementById('ship-postal')) document.getElementById('ship-postal').value = addr.postal || '';
+  if (document.getElementById('ship-state')) document.getElementById('ship-state').value = addr.state || '';
+  update3DCardFront();
 }
 
 function setPaymentMethodUI(method) {
@@ -1075,39 +1195,77 @@ function setPaymentMethodUI(method) {
     const radio = tab.querySelector('input');
     tab.classList.toggle('active', radio && radio.value === method);
   });
-  document.getElementById('pm-card-fields').style.display = method === 'card' ? '' : 'none';
-  document.getElementById('pm-upi-fields').style.display = method === 'upi' ? '' : 'none';
-  document.getElementById('pm-netbanking-fields').style.display = method === 'netbanking' ? '' : 'none';
-  document.getElementById('pm-cod-note').style.display = method === 'cod' ? '' : 'none';
-}
+  if (document.getElementById('pm-card-fields')) document.getElementById('pm-card-fields').style.display = method === 'card' ? '' : 'none';
+  if (document.getElementById('pm-upi-fields')) document.getElementById('pm-upi-fields').style.display = method === 'upi' ? '' : 'none';
+  if (document.getElementById('pm-crypto-fields')) document.getElementById('pm-crypto-fields').style.display = method === 'crypto' ? '' : 'none';
+  if (document.getElementById('pm-bnpl-fields')) document.getElementById('pm-bnpl-fields').style.display = method === 'bnpl' ? '' : 'none';
+  if (document.getElementById('pm-netbanking-fields')) document.getElementById('pm-netbanking-fields').style.display = method === 'netbanking' ? '' : 'none';
+  if (document.getElementById('pm-cod-note')) document.getElementById('pm-cod-note').style.display = method === 'cod' ? '' : 'none';
 
-function generateUpiQr(upiId) {
-  const label = upiId || 'SNEAKIN@UPI';
-  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='170' height='170' viewBox='0 0 170 170'>
-    <rect width='170' height='170' fill='#fff'/>
-    <rect x='10' y='10' width='45' height='45' fill='#14150f'/>
-    <rect x='15' y='15' width='35' height='35' fill='#fff'/>
-    <rect x='22' y='22' width='21' height='21' fill='#1f3fff'/>
-    <rect x='115' y='10' width='45' height='45' fill='#14150f'/>
-    <rect x='120' y='15' width='35' height='35' fill='#fff'/>
-    <rect x='127' y='22' width='21' height='21' fill='#1f3fff'/>
-    <rect x='10' y='115' width='45' height='45' fill='#14150f'/>
-    <rect x='15' y='120' width='35' height='35' fill='#fff'/>
-    <rect x='22' y='127' width='21' height='21' fill='#ff4b3e'/>
-    <path d='M70 20h20v20H70zM100 30h10v30h-10zM65 65h40v40H65zM120 70h30v20h-30zM70 120h30v30H70zM115 115h30v30h-30z' fill='#14150f'/>
-    <text x='85' y='90' text-anchor='middle' font-family='sans-serif' font-size='10' font-weight='bold' fill='#ff4b3e'>SNEAK IN</text>
-    <text x='85' y='162' text-anchor='middle' font-family='monospace' font-size='8' fill='#555'>${label}</text>
-  </svg>`;
-  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  const totals = getCheckoutTotals();
+  updateBnplCalculators(totals.grandTotal);
+  updateCryptoConversion(totals.grandTotal);
 }
 
 function detectCardBrand(num) {
-  const clean = num.replace(/\s+/g, '');
-  if (/^4/.test(clean)) return 'VISA CREDIT / DEBIT';
+  const clean = String(num || '').replace(/\s+/g, '');
+  if (/^4/.test(clean)) return 'VISA CREDIT';
   if (/^5[1-5]/.test(clean)) return 'MASTERCARD';
   if (/^3[47]/.test(clean)) return 'AMERICAN EXPRESS';
-  if (/^(60|65|81|82)/.test(clean)) return 'RUPAY CARD';
-  return 'DEBIT / CREDIT CARD';
+  if (/^(60|65|81|82)/.test(clean)) return 'RUPAY DEBIT';
+  return 'VISA / MASTERCARD';
+}
+
+function update3DCardFront() {
+  const numInput = document.getElementById('card-number');
+  const nameInput = document.getElementById('payer-name');
+  const expInput = document.getElementById('card-expiry');
+  const card3dNum = document.getElementById('card-3d-number');
+  const card3dName = document.getElementById('card-3d-name');
+  const card3dExp = document.getElementById('card-3d-expiry');
+  const card3dBrand = document.getElementById('card-3d-brand');
+
+  if (numInput && card3dNum) {
+    let clean = numInput.value.replace(/\D/g, '').slice(0, 16);
+    let formatted = clean.replace(/(.{4})/g, '$1 ').trim();
+    card3dNum.textContent = formatted || '•••• •••• •••• ••••';
+    if (card3dBrand) card3dBrand.textContent = detectCardBrand(clean);
+  }
+  if (nameInput && card3dName) {
+    card3dName.textContent = nameInput.value.trim().toUpperCase() || 'CARDHOLDER NAME';
+  }
+  if (expInput && card3dExp) {
+    card3dExp.textContent = expInput.value.trim() || 'MM/YY';
+  }
+}
+
+function flip3DCard(isFlipped) {
+  const cardInner = document.getElementById('card-3d-inner');
+  if (cardInner) cardInner.classList.toggle('flipped', isFlipped);
+}
+
+function updateBnplCalculators(total) {
+  const b3 = document.getElementById('bnpl-3mo');
+  const b6 = document.getElementById('bnpl-6mo');
+  const b12 = document.getElementById('bnpl-12mo');
+  if (b3) b3.textContent = `${money(Math.round(total / 3))}/mo`;
+  if (b6) b6.textContent = `${money(Math.round(total / 6))}/mo`;
+  if (b12) b12.textContent = `${money(Math.round((total * 1.08) / 12))}/mo`;
+}
+
+function updateCryptoConversion(total) {
+  const rateText = document.getElementById('crypto-rate-text');
+  if (!rateText) return;
+  if (paymentState.cryptoToken === 'eth') {
+    const ethVal = (total / 285000).toFixed(4);
+    rateText.textContent = `1 ETH = ₹2,85,000 INR · Est. Amount: ${ethVal} ETH`;
+  } else if (paymentState.cryptoToken === 'usdc') {
+    const usdcVal = (total / 83.5).toFixed(2);
+    rateText.textContent = `1 USDC = ₹83.50 INR · Est. Amount: ${usdcVal} USDC`;
+  } else if (paymentState.cryptoToken === 'usdt') {
+    const usdtVal = (total / 83.75).toFixed(2);
+    rateText.textContent = `1 USDT = ₹83.75 INR · Est. Amount: ${usdtVal} USDT`;
+  }
 }
 
 function populateReview() {
@@ -1124,10 +1282,14 @@ function populateReview() {
   if (paymentState.method === 'card') {
     const last4 = (form.cardNumber.value || '').slice(-4);
     const brand = detectCardBrand(form.cardNumber.value);
-    methodText = `${brand} (•••• ${last4 || '0000'})`;
+    methodText = `${brand} (•••• ${last4 || '8921'})`;
   } else if (paymentState.method === 'upi') {
-    const upi = document.getElementById('upi-id').value || 'UPI Direct App';
+    const upi = document.getElementById('upi-id').value || 'Verified UPI App';
     methodText = `Instant UPI (${upi})`;
+  } else if (paymentState.method === 'crypto') {
+    methodText = `Web3 Crypto (${paymentState.cryptoToken.toUpperCase()} Wallet)`;
+  } else if (paymentState.method === 'bnpl') {
+    methodText = `0% EMI Pay Later (${paymentState.bnplMonths} Month Plan)`;
   } else if (paymentState.method === 'netbanking') {
     const bankSelect = document.getElementById('bank-select');
     const bankName = bankSelect ? bankSelect.options[bankSelect.selectedIndex].text : 'Net Banking';
@@ -1137,32 +1299,39 @@ function populateReview() {
   }
   methodEl.textContent = methodText;
 
-  const speedRadio = document.querySelector('input[name="shippingMethod"]:checked');
-  const speedVal = speedRadio ? speedRadio.value : 'standard';
-  paymentState.shippingMethod = speedVal;
+  const totals = getCheckoutTotals();
 
   let speedText = 'Standard Express (3-5 Days)';
-  if (speedVal === 'express') speedText = 'Priority Air Express (1-2 Days)';
-  if (speedVal === 'sameday') speedText = 'Same-Day Metro Delivery';
+  if (totals.shippingSpeed === 'express') speedText = 'Priority Air Express (1-2 Days)';
+  if (totals.shippingSpeed === 'sameday') speedText = 'Same-Day Metro Delivery';
   if (speedEl) speedEl.textContent = speedText;
 
-  const subtotal = cartSubtotal();
-  const discount = calculateDiscount(subtotal);
-  const shippingFee = getShippingFee(subtotal - discount, speedVal);
-  const grandTotal = Math.max(0, subtotal - discount) + shippingFee;
-
-  document.getElementById('rev-subtotal').textContent = money(subtotal);
+  document.getElementById('rev-subtotal').textContent = money(totals.subtotal);
 
   const discountRow = document.getElementById('rev-discount-row');
-  if (discount > 0) {
+  if (totals.discount > 0) {
     if (discountRow) discountRow.style.display = 'flex';
-    document.getElementById('rev-discount').textContent = `-${money(discount)}`;
+    document.getElementById('rev-discount').textContent = `-${money(totals.discount)}`;
   } else {
     if (discountRow) discountRow.style.display = 'none';
   }
 
-  document.getElementById('rev-shipping').textContent = shippingFee === 0 ? 'FREE' : money(shippingFee);
-  document.getElementById('payment-total').textContent = money(grandTotal);
+  const coinsRow = document.getElementById('rev-coins-row');
+  if (coinsRow) {
+    coinsRow.style.display = totals.coinsDiscount > 0 ? 'flex' : 'none';
+    const coinsVal = document.getElementById('rev-coins-val');
+    if (coinsVal) coinsVal.textContent = `-${money(totals.coinsDiscount)}`;
+  }
+
+  const insuranceRow = document.getElementById('rev-insurance-row');
+  if (insuranceRow) {
+    insuranceRow.style.display = totals.insuranceFee > 0 ? 'flex' : 'none';
+    const insVal = document.getElementById('rev-insurance-val');
+    if (insVal) insVal.textContent = `+${money(totals.insuranceFee)}`;
+  }
+
+  document.getElementById('rev-shipping').textContent = totals.shippingFee === 0 ? 'FREE' : money(totals.shippingFee);
+  document.getElementById('payment-total').textContent = money(totals.grandTotal);
 }
 
 function validatePaymentStep(step) {
@@ -1202,7 +1371,136 @@ function validatePaymentStep(step) {
   return false;
 }
 
-/* ---------- Order Confirmation & Tracking Modals ---------- */
+function launchConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const particles = [];
+  const colors = ['#ff4b3e', '#ff2a5f', '#1f3fff', '#d8ff3f', '#ffffff', '#2ecc71', '#ffe066'];
+
+  for (let i = 0; i < 150; i++) {
+    particles.push({
+      x: canvas.width / 2,
+      y: canvas.height / 2,
+      vx: (Math.random() - 0.5) * 20,
+      vy: (Math.random() - 0.7) * 20,
+      size: Math.random() * 8 + 4,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      rotation: Math.random() * 360,
+      rSpeed: (Math.random() - 0.5) * 10,
+      opacity: 1
+    });
+  }
+
+  let startTime = Date.now();
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const elapsed = Date.now() - startTime;
+    let alive = false;
+
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.35;
+      p.rotation += p.rSpeed;
+      if (elapsed > 1800) p.opacity -= 0.02;
+
+      if (p.opacity > 0 && p.y < canvas.height + 20) {
+        alive = true;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotation * Math.PI) / 180);
+        ctx.globalAlpha = Math.max(0, p.opacity);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+        ctx.restore();
+      }
+    });
+
+    if (alive && elapsed < 4000) {
+      requestAnimationFrame(animate);
+    } else {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+  animate();
+}
+
+function triggerBiometricExpressCheckout(provider) {
+  const bioModal = document.getElementById('biometric-modal');
+  const bioTitle = document.getElementById('bio-modal-title');
+  const bioSub = document.getElementById('bio-modal-sub');
+  const bioIcon = document.getElementById('bio-ring-icon');
+
+  if (!bioModal) return;
+  if (bioTitle) bioTitle.textContent = provider === 'apple' ? ' Pay Biometric Scan...' : 'G Pay Biometric Touch...';
+  if (bioSub) bioSub.textContent = 'Confirming identity to place 1-tap express order.';
+  if (bioIcon) bioIcon.textContent = provider === 'apple' ? '' : '👆';
+
+  bioModal.classList.add('open');
+  bioModal.setAttribute('aria-hidden', 'false');
+
+  setTimeout(() => {
+    if (bioIcon) bioIcon.textContent = '✓';
+    if (bioTitle) bioTitle.textContent = 'Identity Verified!';
+
+    setTimeout(() => {
+      bioModal.classList.remove('open');
+      bioModal.setAttribute('aria-hidden', 'true');
+
+      const form = document.getElementById('payment-form');
+      if (form) {
+        if (!form.payerName.value) form.payerName.value = 'Ankit Chowdhary';
+        if (!form.payerEmail.value) form.payerEmail.value = 'ankit@example.com';
+        if (!form.shipPhone.value) form.shipPhone.value = '9876543210';
+        if (!form.shipLine1.value) form.shipLine1.value = 'B-104 Sneak Heights, Tech Park';
+        if (!form.shipCity.value) form.shipCity.value = 'Bengaluru';
+        if (!form.shipPostal.value) form.shipPostal.value = '560001';
+        if (!form.shipState.value) form.shipState.value = 'Karnataka';
+      }
+
+      paymentState.method = provider === 'apple' ? 'Apple Pay Express' : 'Google Pay Express';
+      showToast(`${provider === 'apple' ? 'Apple Pay' : 'Google Pay'} Verified!`, '⚡');
+      completeOrderPlacement();
+    }, 800);
+  }, 1200);
+}
+
+function completeOrderPlacement() {
+  const form = document.getElementById('payment-form');
+  const name = (form && form.payerName && form.payerName.value.trim()) || 'Ankit Chowdhary';
+  const email = (form && form.payerEmail && form.payerEmail.value.trim()) || 'ankit@example.com';
+  const phone = (form && form.shipPhone && form.shipPhone.value.trim()) || '9876543210';
+  const line1 = (form && form.shipLine1 && form.shipLine1.value.trim()) || '102 Urban Heights';
+  const line2 = (form && form.shipLine2 && form.shipLine2.value.trim()) || '';
+  const city = (form && form.shipCity && form.shipCity.value.trim()) || 'Bengaluru';
+  const postal = (form && form.shipPostal && form.shipPostal.value.trim()) || '560001';
+  const state = (form && form.shipState && form.shipState.value.trim()) || 'Karnataka';
+
+  const totals = getCheckoutTotals();
+
+  const order = {
+    id: 'SNK-' + Math.floor(100000 + Math.random() * 900000),
+    date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+    items: [...cart],
+    address: `${name}, ${line1}${line2 ? ', ' + line2 : ''}, ${city} - ${postal}, ${state} (Ph: ${phone})`,
+    method: paymentState.method.toUpperCase(),
+    total: totals.grandTotal,
+    status: 'Confirmed — Preparing Drop 📦'
+  };
+
+  cart = [];
+  store.save('sneakin_cart', cart);
+  updateCartUI();
+  closePaymentModal();
+  closeCartDrawer();
+  placeOrderSuccess(order);
+  launchConfetti();
+}
+
 function placeOrderSuccess(order) {
   placedOrders.unshift(order);
   store.save('sneakin_orders', placedOrders);
@@ -1227,22 +1525,18 @@ function placeOrderSuccess(order) {
           </div>
         `).join('')}
       </div>
-      <div class="receipt-item-row" style="border-top:1px dashed var(--line); padding-top:0.5rem;">
-        <span>Est. Delivery Date:</span>
-        <strong style="color:var(--cobalt);">${order.estDelivery}</strong>
-      </div>
-      <div class="receipt-item-row" style="margin-top:0.4rem;">
-        <span>Shipping To:</span>
-        <span>${order.address.name}, ${order.address.city}</span>
-      </div>
-      <div class="receipt-item-row" style="border-top:1px solid var(--line); padding-top:0.6rem; font-size:1rem;">
-        <strong>Total Paid:</strong>
-        <strong style="color:var(--coral);">${money(order.total)}</strong>
+      <div class="review-breakdown" style="border-top:1px dashed var(--line); padding-top:0.6rem;">
+        <div class="rev-row"><span>Payment Method</span><strong>${order.method}</strong></div>
+        <div class="rev-row"><span>Shipping Address</span><span>${typeof order.address === 'object' ? `${order.address.name}, ${order.address.city}` : order.address}</span></div>
+        <div class="rev-row rev-total"><span>Total Paid</span><strong style="color:var(--cobalt);">${money(order.total)}</strong></div>
       </div>
     `;
   }
 
-  if (modal) modal.classList.add('open');
+  if (modal) {
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+  }
   document.body.style.overflow = 'hidden';
 }
 
@@ -1818,44 +2112,122 @@ document.addEventListener('DOMContentLoaded', () => {
         store.save('sneakin_addresses', savedAddresses);
       }
 
-      const subtotal = cartSubtotal();
-      const discount = calculateDiscount(subtotal);
-      const shippingFee = getShippingFee(subtotal - discount, paymentState.shippingMethod);
-      const grandTotal = Math.max(0, subtotal - discount) + shippingFee;
+      // 3D Secure OTP challenge simulation for Card payments
+      if (paymentState.method === 'card') {
+        const otpModal = document.getElementById('otp-modal');
+        if (otpModal) {
+          otpModal.classList.add('open');
+          otpModal.setAttribute('aria-hidden', 'false');
+          return;
+        }
+      }
 
-      const orderId = 'SNK-' + Math.floor(100000 + Math.random() * 900000);
-      const today = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
-
-      let daysToAdd = 4;
-      if (paymentState.shippingMethod === 'express') daysToAdd = 2;
-      if (paymentState.shippingMethod === 'sameday') daysToAdd = 1;
-
-      const estDate = new Date();
-      estDate.setDate(estDate.getDate() + daysToAdd);
-      const estDeliveryStr = estDate.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
-
-      const newOrder = {
-        id: orderId,
-        date: today,
-        estDelivery: estDeliveryStr,
-        items: cart.map(l => {
-          const p = PRODUCTS.find(pr => pr.id === l.id);
-          return { id: l.id, name: p ? p.name : 'Product', size: l.size, qty: l.qty, price: p ? p.price : 0 };
-        }),
-        address: addrObj,
-        deliveryMethod: paymentState.shippingMethod,
-        total: grandTotal,
-        status: 'In Transit'
-      };
-
-      closePaymentModal();
-      clearCart();
-      appliedCoupon = null;
-
-      showToast(`Order ${orderId} placed successfully!`, '🎉');
-      placeOrderSuccess(newOrder);
+      completeOrderPlacement();
     });
   }
+
+  // 3D Secure OTP Verification Submit
+  const submitOtpBtn = document.getElementById('submit-otp-btn');
+  if (submitOtpBtn) {
+    submitOtpBtn.addEventListener('click', () => {
+      const otpModal = document.getElementById('otp-modal');
+      if (otpModal) {
+        otpModal.classList.remove('open');
+        otpModal.setAttribute('aria-hidden', 'true');
+      }
+      showToast('3D Secure OTP Verified Successfully!', '🔒');
+      completeOrderPlacement();
+    });
+  }
+
+  // Express Biometric Checkout Buttons
+  const expressApple = document.getElementById('express-apple-btn');
+  const expressGoogle = document.getElementById('express-google-btn');
+  if (expressApple) expressApple.addEventListener('click', () => triggerBiometricExpressCheckout('apple'));
+  if (expressGoogle) expressGoogle.addEventListener('click', () => triggerBiometricExpressCheckout('google'));
+
+  // 3D Card Input & Flip Event Listeners
+  const cardNum = document.getElementById('card-number');
+  const cardExp = document.getElementById('card-expiry');
+  const cardCvv = document.getElementById('card-cvv');
+  const payerName = document.getElementById('payer-name');
+
+  if (cardNum) cardNum.addEventListener('input', update3DCardFront);
+  if (cardExp) cardExp.addEventListener('input', update3DCardFront);
+  if (payerName) payerName.addEventListener('input', update3DCardFront);
+
+  if (cardCvv) {
+    cardCvv.addEventListener('focus', () => flip3DCard(true));
+    cardCvv.addEventListener('blur', () => flip3DCard(false));
+    cardCvv.addEventListener('input', (e) => {
+      const cvvBox = document.getElementById('card-3d-cvv');
+      if (cvvBox) cvvBox.textContent = e.target.value || '•••';
+    });
+  }
+
+  // Web3 Crypto Chips & Wallet Connect
+  document.querySelectorAll('.crypto-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.crypto-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      paymentState.cryptoToken = chip.dataset.crypto;
+      updateCryptoConversion(getCheckoutTotals().grandTotal);
+      showToast(`Selected ${chip.dataset.crypto.toUpperCase()} crypto network`, '💎');
+    });
+  });
+
+  const walletBtn = document.getElementById('connect-wallet-btn');
+  if (walletBtn) {
+    walletBtn.addEventListener('click', () => {
+      walletBtn.textContent = '🦊 Connecting to Web3 Wallet...';
+      setTimeout(() => {
+        walletBtn.textContent = '✓ MetaMask Connected (0x71C...4f9)';
+        walletBtn.style.background = 'linear-gradient(135deg, #1f8a5f, #156243)';
+        showToast('Web3 Wallet Connected Successfully!', '🦊');
+      }, 1000);
+    });
+  }
+
+  // BNPL EMI Cards
+  document.querySelectorAll('.bnpl-card').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.bnpl-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      paymentState.bnplMonths = Number(card.dataset.months);
+      showToast(`Selected ${card.dataset.months}-Month Zero Cost EMI`, '⌛');
+    });
+  });
+
+  // UPI App Shortcuts & Simulate Auto Verify
+  ['gpay', 'phonepe', 'paytm', 'cred'].forEach(appName => {
+    const btn = document.getElementById(`upi-${appName}-btn`);
+    if (btn) {
+      btn.addEventListener('click', () => {
+        paymentState.upiScanned = true;
+        showToast(`Opening ${appName.toUpperCase()} direct payment link...`, '⚡');
+      });
+    }
+  });
+
+  const simVerify = document.getElementById('simulate-upi-verify-btn');
+  if (simVerify) {
+    simVerify.addEventListener('click', () => {
+      simVerify.textContent = '🔄 Polling Payment Status...';
+      setTimeout(() => {
+        simVerify.textContent = '✓ Payment Verified & Received!';
+        simVerify.style.background = '#1f8a5f';
+        simVerify.style.color = '#fff';
+        paymentState.upiScanned = true;
+        showToast('Instant UPI Payment Verified!', '⚡');
+      }, 1200);
+    });
+  }
+
+  // SneakCoins & SneakShield Toggles
+  const coinsToggle = document.getElementById('toggle-sneakcoins');
+  const insuranceToggle = document.getElementById('toggle-insurance');
+  if (coinsToggle) coinsToggle.addEventListener('change', populateReview);
+  if (insuranceToggle) insuranceToggle.addEventListener('change', populateReview);
 
   // Success Modal Actions
   const successTrackBtn = document.getElementById('success-track-btn');
@@ -2014,4 +2386,258 @@ document.addEventListener('DOMContentLoaded', () => {
       handleAiQuery(btn.dataset.prompt);
     });
   });
+
+  /* ---------- Category Story Bubbles Handler ---------- */
+  function setupStoryBubbles() {
+    const bubbles = document.querySelectorAll('.story-bubble');
+    if (!bubbles.length) return;
+
+    bubbles.forEach(b => {
+      b.addEventListener('click', () => {
+        bubbles.forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        const cat = b.dataset.cat;
+        
+        if (cat === 'all') {
+          filterCategory('all');
+          document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          filterCategory(cat);
+          const catSec = document.getElementById(cat);
+          if (catSec) catSec.scrollIntoView({ behavior: 'smooth' });
+          else document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  }
+  setupStoryBubbles();
+
+  /* ---------- Real-Time AI Personalization & Recommendation Engine ---------- */
+  function trackProductView(productId) {
+    try {
+      let views = JSON.parse(localStorage.getItem('sneak_in_views') || '[]');
+      views = [productId, ...views.filter(id => id !== productId)].slice(0, 20);
+      localStorage.setItem('sneak_in_views', JSON.stringify(views));
+      renderAIRecommendations();
+    } catch(e){}
+  }
+
+  function renderAIRecommendations() {
+    const recGrid = document.getElementById('ai-recs-grid');
+    if (!recGrid) return;
+
+    let views = [];
+    try { views = JSON.parse(localStorage.getItem('sneak_in_views') || '[]'); } catch(e){}
+    
+    let viewedProducts = PRODUCTS.filter(p => views.includes(p.id));
+    let preferredCats = viewedProducts.map(p => p.category);
+    
+    let recs = PRODUCTS.filter(p => !views.includes(p.id));
+    if (preferredCats.length > 0) {
+      recs.sort((a, b) => {
+        let scoreA = (preferredCats.includes(a.category) ? 2 : 0) + (a.discount > 20 ? 1 : 0);
+        let scoreB = (preferredCats.includes(b.category) ? 2 : 0) + (b.discount > 20 ? 1 : 0);
+        return scoreB - scoreA;
+      });
+    }
+
+    let topRecs = recs.slice(0, 4);
+    if (topRecs.length < 4) topRecs = PRODUCTS.slice(0, 4);
+
+    recGrid.innerHTML = topRecs.map((p, idx) => {
+      const matchPct = (98.6 - idx * 1.8).toFixed(1);
+      return `
+        <div class="ai-rec-card">
+          <span class="ai-rec-match">✨ ${matchPct}% AI Match</span>
+          <div class="ai-rec-img-wrap">
+            <img src="${p.img}" alt="${p.name}" class="ai-rec-img" onerror="this.onerror=null; this.src='${getFallbackImg(p.category)}';">
+          </div>
+          <div class="ai-rec-details">
+            <h4 class="ai-rec-title">${p.name}</h4>
+            <div class="ai-rec-price">${money(p.price)} <small style="text-decoration:line-through;color:var(--ink-soft);">${money(p.mrp)}</small></div>
+          </div>
+          <button type="button" class="cta-button ai-rec-quick-add" data-id="${p.id}" style="width:100%;padding:0.6rem;">Quick View &amp; Add 🛍️</button>
+        </div>
+      `;
+    }).join('');
+
+    recGrid.querySelectorAll('.ai-rec-quick-add').forEach(btn => {
+      btn.addEventListener('click', () => openQuickView(btn.dataset.id));
+    });
+  }
+  renderAIRecommendations();
+
+  /* ---------- Interactive AI Fit & Size Finder Handler ---------- */
+  function setupFitFinder() {
+    const fitModal = document.getElementById('fit-advisor-modal');
+    const fitBtn = document.getElementById('fit-finder-btn');
+    const fitClose = document.getElementById('fit-advisor-close');
+    const heightInput = document.getElementById('fit-height');
+    const weightInput = document.getElementById('fit-weight');
+    const valHeight = document.getElementById('val-height');
+    const valWeight = document.getElementById('val-weight');
+    const fitType = document.getElementById('fit-type');
+    const fitCalcSize = document.getElementById('fit-calc-size');
+    const fitCalcScore = document.getElementById('fit-calc-score');
+    const fitCalcFill = document.getElementById('fit-calc-fill');
+
+    if (!fitModal || !fitBtn) return;
+
+    fitBtn.addEventListener('click', () => fitModal.classList.add('open'));
+    if (fitClose) fitClose.addEventListener('click', () => fitModal.classList.remove('open'));
+
+    let currentPref = 'regular';
+    document.querySelectorAll('.fit-pref-btn').forEach(b => {
+      b.addEventListener('click', () => {
+        document.querySelectorAll('.fit-pref-btn').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        currentPref = b.dataset.pref;
+        updateFitCalculation();
+      });
+    });
+
+    function updateFitCalculation() {
+      const h = parseInt(heightInput.value, 10);
+      const w = parseInt(weightInput.value, 10);
+      const type = fitType.value;
+
+      if (valHeight) valHeight.textContent = `${h} cm`;
+      if (valWeight) valWeight.textContent = `${w} kg`;
+
+      if (type === 'footwear') {
+        let sizeNum = 7;
+        if (h > 185 || w > 85) sizeNum = 11;
+        else if (h > 180 || w > 78) sizeNum = 10;
+        else if (h > 172 || w > 68) sizeNum = 9;
+        else if (h > 165 || w > 58) sizeNum = 8;
+
+        if (currentPref === 'tight') sizeNum = Math.max(6, sizeNum - 1);
+        if (currentPref === 'loose') sizeNum = Math.min(11, sizeNum + 1);
+
+        fitCalcSize.textContent = `UK ${sizeNum} (EUR ${40 + sizeNum - 6})`;
+      } else {
+        let appSize = 'M';
+        if (w > 90 || h > 188) appSize = 'XXL';
+        else if (w > 80 || h > 182) appSize = 'XL';
+        else if (w > 70 || h > 174) appSize = 'L';
+        else if (w > 60 || h > 165) appSize = 'M';
+        else appSize = 'S';
+
+        fitCalcSize.textContent = `Size ${appSize}`;
+      }
+
+      const conf = (94.2 + (h % 5) * 0.8).toFixed(1);
+      fitCalcScore.textContent = `${conf}% Fit Confidence`;
+      if (fitCalcFill) fitCalcFill.style.width = `${conf}%`;
+    }
+
+    if (heightInput) heightInput.addEventListener('input', updateFitCalculation);
+    if (weightInput) weightInput.addEventListener('input', updateFitCalculation);
+    if (fitType) fitType.addEventListener('change', updateFitCalculation);
+    updateFitCalculation();
+  }
+  setupFitFinder();
+
+  /* ---------- Interactive Outfit Style Studio Handler ---------- */
+  function setupOutfitStudio() {
+    const studioModal = document.getElementById('outfit-studio-modal');
+    const studioBtn = document.getElementById('outfit-studio-btn');
+    const studioClose = document.getElementById('outfit-studio-close');
+    const addAllBtn = document.getElementById('outfit-add-all-btn');
+
+    if (!studioModal || !studioBtn) return;
+
+    studioBtn.addEventListener('click', () => studioModal.classList.add('open'));
+    if (studioClose) studioClose.addEventListener('click', () => studioModal.classList.remove('open'));
+
+    let currentOutfit = {
+      top: PRODUCTS.find(p => p.category === 'shirts') || PRODUCTS[0],
+      bottom: PRODUCTS.find(p => p.category === 'jeans') || PRODUCTS[1],
+      footwear: PRODUCTS.find(p => p.category === 'sneakers') || PRODUCTS.find(p => p.category === 'sports') || PRODUCTS[2]
+    };
+
+    function updateOutfitUI() {
+      const slots = ['top', 'bottom', 'footwear'];
+      let mrpTotal = 0;
+      let priceTotal = 0;
+
+      slots.forEach(slot => {
+        const item = currentOutfit[slot];
+        if (!item) return;
+        mrpTotal += item.mrp;
+        priceTotal += item.price;
+
+        const imgEl = document.querySelector(`#slot-${slot}-img img`);
+        const nameEl = document.getElementById(`slot-${slot}-name`);
+        const priceEl = document.getElementById(`slot-${slot}-price`);
+
+        if (imgEl) imgEl.src = item.img;
+        if (nameEl) nameEl.textContent = item.name;
+        if (priceEl) priceEl.textContent = money(item.price);
+      });
+
+      const bundleTotal = Math.round(priceTotal * 0.85); // Extra 15% Bundle Discount
+      const savings = mrpTotal - bundleTotal;
+
+      const mrpEl = document.getElementById('outfit-mrp-total');
+      const finalEl = document.getElementById('outfit-final-total');
+      const savingsEl = document.querySelector('.outfit-savings-badge');
+
+      if (mrpEl) mrpEl.textContent = money(mrpTotal);
+      if (finalEl) finalEl.textContent = money(bundleTotal);
+      if (savingsEl) savingsEl.textContent = `🔥 Save 15% (${money(savings)} Off)`;
+    }
+
+    document.querySelectorAll('.slot-change-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const slot = btn.dataset.slot;
+        let available = [];
+        if (slot === 'top') {
+          available = PRODUCTS.filter(p => p.category === 'shirts' || p.category === 'sportswear');
+        } else if (slot === 'bottom') {
+          available = PRODUCTS.filter(p => p.category === 'jeans' || p.category === 'shorts' || p.category === 'sportswear');
+        } else {
+          available = PRODUCTS.filter(p => p.category === 'sneakers' || p.category === 'sports' || p.category === 'highrise' || p.category === 'boots');
+        }
+        const currId = currentOutfit[slot]?.id;
+        const nextItem = available.find(p => p.id !== currId) || available[0];
+        currentOutfit[slot] = nextItem;
+        updateOutfitUI();
+        showToast(`Selected ${nextItem.name} for outfit!`, '✦');
+      });
+    });
+
+    if (addAllBtn) {
+      addAllBtn.addEventListener('click', () => {
+        Object.values(currentOutfit).forEach(item => {
+          if (item) {
+            cart.push({
+              id: item.id,
+              name: item.name,
+              price: Math.round(item.price * 0.85),
+              img: item.img,
+              size: item.category === 'shirts' || item.category === 'jeans' ? 'M' : 9,
+              quantity: 1
+            });
+          }
+        });
+        saveCart();
+        renderCartUI();
+        studioModal.classList.remove('open');
+        openCartDrawer();
+        showToast('Full Outfit Bundle added to cart with 15% discount! 🔥', '🛍️');
+      });
+    }
+
+    updateOutfitUI();
+  }
+  setupOutfitStudio();
+
+  // Track product view when quick-view opens
+  const origOpenQuickView = window.openQuickView;
+  window.openQuickView = function(id) {
+    trackProductView(id);
+    if (typeof origOpenQuickView === 'function') origOpenQuickView(id);
+  };
+
 });
