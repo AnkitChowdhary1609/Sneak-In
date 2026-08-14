@@ -11,7 +11,7 @@ const MEDIA_CONFIG = {
     highrise: 'videos/blazer.mp4',
     sports: 'videos/jordan.mp4',
     boots: 'videos/running.mp4',
-    apparel: 'videos/apparel.mp4'
+    apparel: 'videos/best.mp4'
   },
 
   // Fallback Images per Category (Folder: images/)
